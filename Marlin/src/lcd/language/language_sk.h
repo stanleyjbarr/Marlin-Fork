@@ -34,7 +34,7 @@
  * Substitutions are applied for the following characters when used in menu items titles:
  *
  *   $ displays an inserted string
- *   { displays  '0'....'10' for indexes 0 - 10
+ *   = displays  '0'....'10' for indexes 0 - 10
  *   ~ displays  '1'....'11' for indexes 0 - 10
  *   * displays 'E1'...'E11' for indexes 0 - 10 (By default. Uses LCD_FIRST_TOOL)
  *   @ displays an axis name such as XYZUVW, or E for an extruder
@@ -65,8 +65,10 @@ namespace Language_sk {
   LSTR MSG_KILL_SUBCALL_OVERFLOW          = _UxGT("Preteč. podprogramu");
   LSTR MSG_LCD_ENDSTOPS                   = _UxGT("Endstopy"); // max 8 znakov
   LSTR MSG_LCD_SOFT_ENDSTOPS              = _UxGT("Soft. endstopy");
-  LSTR MSG_MAIN_MENU                      = _UxGT("Hlavná ponuka");
+  LSTR MSG_MAIN                           = _UxGT("Hlavná ponuka");
   LSTR MSG_ADVANCED_SETTINGS              = _UxGT("Pokročilé nastav.");
+  LSTR MSG_TOOLBAR_SETUP                  = _UxGT("Panel nástrojov");
+  LSTR MSG_OPTION_DISABLED                = _UxGT("Možnosť vypnutá");
   LSTR MSG_CONFIGURATION                  = _UxGT("Konfigurácia");
   LSTR MSG_RUN_AUTO_FILES                 = _UxGT("Auto-štart");
   LSTR MSG_DISABLE_STEPPERS               = _UxGT("Uvolniť motory");
@@ -82,11 +84,11 @@ namespace Language_sk {
   LSTR MSG_FILAMENT_SET                   = _UxGT("Nastav. filamentu");
   LSTR MSG_FILAMENT_MAN                   = _UxGT("Správa filamentu");
   LSTR MSG_MANUAL_LEVELING                = _UxGT("Ručné rovnanie");
-  LSTR MSG_TRAM_FL                        = _UxGT("Ľavý predný");
-  LSTR MSG_TRAM_FR                        = _UxGT("Pravý predný");
-  LSTR MSG_TRAM_C                         = _UxGT("Stred");
-  LSTR MSG_TRAM_BL                        = _UxGT("Ľavý zadný");
-  LSTR MSG_TRAM_BR                        = _UxGT("Pravý zadný");
+  LSTR MSG_LEVBED_FL                      = _UxGT("Ľavý predný");
+  LSTR MSG_LEVBED_FR                      = _UxGT("Pravý predný");
+  LSTR MSG_LEVBED_C                       = _UxGT("Stred");
+  LSTR MSG_LEVBED_BL                      = _UxGT("Ľavý zadný");
+  LSTR MSG_LEVBED_BR                      = _UxGT("Pravý zadný");
   LSTR MSG_MANUAL_MESH                    = _UxGT("Ručná mriežka");
   LSTR MSG_AUTO_MESH                      = _UxGT("Automat. mriežka");
   LSTR MSG_AUTO_Z_ALIGN                   = _UxGT("Auto-zarovn. Z");
@@ -292,7 +294,7 @@ namespace Language_sk {
   LSTR MSG_SET_LEDS_VIOLET                = _UxGT("Fialová");
   LSTR MSG_SET_LEDS_WHITE                 = _UxGT("Biela");
   LSTR MSG_SET_LEDS_DEFAULT               = _UxGT("Obnoviť nastavenie");
-  LSTR MSG_LED_CHANNEL_N                  = _UxGT("Kanál {");
+  LSTR MSG_LED_CHANNEL_N                  = _UxGT("Kanál =");
   LSTR MSG_LEDS2                          = _UxGT("Svetlo #2");
   LSTR MSG_NEO2_PRESETS                   = _UxGT("Predvolby svetla #2");
   LSTR MSG_NEO2_BRIGHTNESS                = _UxGT("Jas");
@@ -325,7 +327,7 @@ namespace Language_sk {
   LSTR MSG_MOVE_1IN                       = _UxGT("Posunúť o 1,0in");
   LSTR MSG_LIVE_MOVE                      = _UxGT("Živý pohyb");
   LSTR MSG_SPEED                          = _UxGT("Rýchlosť");
-  LSTR MSG_MESH_Z_OFFSET                  = _UxGT("Výška podl.");
+  LSTR MSG_BED_Z                          = _UxGT("Výška podl.");
   LSTR MSG_NOZZLE                         = _UxGT("Tryska");
   LSTR MSG_NOZZLE_N                       = _UxGT("Tryska ~");
   LSTR MSG_NOZZLE_PARKED                  = _UxGT("Tryska zaparkovaná");
@@ -361,10 +363,10 @@ namespace Language_sk {
   LSTR MSG_PID_CYCLE                      = _UxGT("Cykly PID");
   LSTR MSG_PID_AUTOTUNE_DONE              = _UxGT("Kal. PID dokončená");
   LSTR MSG_PID_AUTOTUNE_FAILED            = _UxGT("Kal. PID zlyhala!");
-  LSTR MSG_BAD_HEATER_ID                  = _UxGT("Zlý extrudér");
+  LSTR MSG_BAD_EXTRUDER_NUM               = _UxGT("Zlý extrudér");
   LSTR MSG_TEMP_TOO_HIGH                  = _UxGT("Príliš vysoká tepl.");
-  LSTR MSG_TIMEOUT                        = _UxGT("Čas vypršal");
-  LSTR MSG_PID_BAD_HEATER_ID              = _UxGT("Auto-kal. zlyhala! Zlý extrúder.");
+  LSTR MSG_TIMEOUT                        = _UxGT("Čas vypršal.");
+  LSTR MSG_PID_BAD_EXTRUDER_NUM           = _UxGT("Auto-kal. zlyhala! Zlý extrúder.");
   LSTR MSG_PID_TEMP_TOO_HIGH              = _UxGT("Auto-kal. zlyhala! Príliš vysoká tepl.");
   LSTR MSG_PID_TIMEOUT                    = _UxGT("Auto-kal. zlyhala! Čas vypršal.");
   LSTR MSG_MPC_MEASURING_AMBIENT          = _UxGT("Test. tepl. straty");
@@ -455,7 +457,7 @@ namespace Language_sk {
   LSTR MSG_SETTINGS_STORED                = _UxGT("Nastavenie uložené");
   LSTR MSG_MEDIA_UPDATE                   = _UxGT("Aktualiz. z karty");
   LSTR MSG_RESET_PRINTER                  = _UxGT("Reštart. tlačiar.");
-  LSTR MSG_REFRESH                        = LCD_STR_REFRESH _UxGT("Obnoviť");
+  LSTR MSG_REFRESH                        = LCD_STR_REFRESH  _UxGT("Obnoviť");
   LSTR MSG_INFO_SCREEN                    = _UxGT("Info. obrazovka");
   LSTR MSG_INFO_MACHINENAME               = _UxGT("Názov stroja");
   LSTR MSG_INFO_SIZE                      = _UxGT("Rozmer");
@@ -498,7 +500,7 @@ namespace Language_sk {
     LSTR MSG_HOST_START_PRINT             = _UxGT("Spustiť z hosta");
     LSTR MSG_PRINTING_OBJECT              = _UxGT("Tlačím objekt");
     LSTR MSG_CANCEL_OBJECT                = _UxGT("Zrušiť objekt");
-    LSTR MSG_CANCEL_OBJECT_N              = _UxGT("Zrušiť objekt {");
+    LSTR MSG_CANCEL_OBJECT_N              = _UxGT("Zrušiť objekt =");
     LSTR MSG_CONTINUE_PRINT_JOB           = _UxGT("Pokračovať v úlohe");
     LSTR MSG_MEDIA_MENU                   = _UxGT("Vytlačiť z karty");
     LSTR MSG_TURN_OFF                     = _UxGT("Vypnite tlačiareň");
@@ -507,7 +509,7 @@ namespace Language_sk {
     LSTR MSG_HOST_START_PRINT             = _UxGT("Spustiť z hosta");
     LSTR MSG_PRINTING_OBJECT              = _UxGT("Tlačím obj.");
     LSTR MSG_CANCEL_OBJECT                = _UxGT("Zrušiť obj.");
-    LSTR MSG_CANCEL_OBJECT_N              = _UxGT("Zrušiť obj. {");
+    LSTR MSG_CANCEL_OBJECT_N              = _UxGT("Zrušiť obj. =");
     LSTR MSG_CONTINUE_PRINT_JOB           = _UxGT("Pokrač. v úlohe");
     LSTR MSG_MEDIA_MENU                   = _UxGT("Tlač z karty");
     LSTR MSG_TURN_OFF                     = _UxGT("Vypnit. teraz");

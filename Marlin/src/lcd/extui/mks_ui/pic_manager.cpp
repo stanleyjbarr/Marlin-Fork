@@ -33,8 +33,6 @@
 #include "../../../sd/cardreader.h"
 #include "../../../MarlinCore.h"
 
-#include <string.h>
-
 extern uint16_t DeviceCode;
 
 #if HAS_MEDIA
@@ -430,14 +428,14 @@ uint32_t picInfoWrite(uint8_t *P_name, uint32_t P_size) {
       do {
         hal.watchdog_refresh();
         pbr = file.read(public_buf, BMP_WRITE_BUF_LEN);
-        picLogoWrite((uint8_t*)fn, public_buf, pbr);
+        Pic_Logo_Write((uint8_t*)fn, public_buf, pbr);
       } while (pbr >= BMP_WRITE_BUF_LEN);
     }
     else if (assetType == ASSET_TYPE_TITLE_LOGO) {
       do {
         hal.watchdog_refresh();
         pbr = file.read(public_buf, BMP_WRITE_BUF_LEN);
-        picTitleLogoWrite((uint8_t*)fn, public_buf, pbr);
+        Pic_TitleLogo_Write((uint8_t*)fn, public_buf, pbr);
       } while (pbr >= BMP_WRITE_BUF_LEN);
     }
     else if (assetType == ASSET_TYPE_G_PREVIEW) {
@@ -448,7 +446,7 @@ uint32_t picInfoWrite(uint8_t *P_name, uint32_t P_size) {
       } while (pbr >= BMP_WRITE_BUF_LEN);
     }
     else if (assetType == ASSET_TYPE_ICON) {
-      Pic_Write_Addr = picInfoWrite((uint8_t*)fn, pfileSize);
+      Pic_Write_Addr = Pic_Info_Write((uint8_t*)fn, pfileSize);
       SPIFlash.beginWrite(Pic_Write_Addr);
       #if HAS_SPI_FLASH_COMPRESSION
         do {

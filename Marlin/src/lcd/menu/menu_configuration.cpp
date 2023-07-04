@@ -32,10 +32,6 @@
 
 #include "../../MarlinCore.h"
 
-#if ENABLED(LCD_ENDSTOP_TEST)
-  #include "../../module/endstops.h"
-#endif
-
 #if HAS_FILAMENT_SENSOR
   #include "../../feature/runout.h"
 #endif
@@ -59,17 +55,9 @@
   #include "../../libs/buzzer.h"
 #endif
 
-#if ENABLED(HOTEND_IDLE_TIMEOUT)
-  #include "../../feature/hotend_idle.h"
-#endif
-
-#if ANY(LCD_PROGRESS_BAR_TEST, LCD_ENDSTOP_TEST)
-  #include "../lcdprint.h"
-  #define HAS_DEBUG_MENU 1
-#endif
-
-//#define DEBUG_OUT 1
 #include "../../core/debug_out.h"
+
+#define HAS_DEBUG_MENU ENABLED(LCD_PROGRESS_BAR_TEST)
 
 void menu_advanced_settings();
 #if ANY(DELTA_CALIBRATION_MENU, DELTA_AUTO_CALIBRATION)
@@ -329,9 +317,15 @@ void menu_advanced_settings();
 
   #if ENABLED(BLTOUCH_LCD_VOLTAGE_MENU)
     void bltouch_report() {
-      FSTR_P const mode0 = F("OD"), mode1 = F("5V");
-      DEBUG_ECHOLNPGM("BLTouch Mode: ", bltouch.od_5v_mode ? mode1 : mode0, " (Default ", TERN(BLTOUCH_SET_5V_MODE, mode1, mode0), ")");
-      ui.set_status(MString<18>(F("BLTouch Mode: "), bltouch.od_5v_mode ? mode1 : mode0));
+      PGMSTR(mode0, "OD");
+      PGMSTR(mode1, "5V");
+      DEBUG_ECHOPGM("BLTouch Mode: ");
+      DEBUG_ECHOPGM_P(bltouch.od_5v_mode ? mode1 : mode0);
+      DEBUG_ECHOLNPGM(" (Default " TERN(BLTOUCH_SET_5V_MODE, "5V", "OD") ")");
+      char mess[21];
+      strcpy_P(mess, PSTR("BLTouch Mode: "));
+      strcpy_P(&mess[15], bltouch.od_5v_mode ? mode1 : mode0);
+      ui.set_status(mess);
       ui.return_to_status();
     }
   #endif
@@ -344,7 +338,7 @@ void menu_advanced_settings();
     ACTION_ITEM(MSG_BLTOUCH_DEPLOY, bltouch._deploy);
     ACTION_ITEM(MSG_BLTOUCH_STOW, bltouch._stow);
     ACTION_ITEM(MSG_BLTOUCH_SW_MODE, bltouch._set_SW_mode);
-    #if HAS_BLTOUCH_HS_MODE
+    #ifdef BLTOUCH_HS_MODE
       EDIT_ITEM(bool, MSG_BLTOUCH_SPEED_MODE, &bltouch.high_speed_mode);
     #endif
     #if ENABLED(BLTOUCH_LCD_VOLTAGE_MENU)
@@ -677,7 +671,7 @@ void menu_configuration() {
 
   // Preheat configurations
   #if HAS_PREHEAT && DISABLED(SLIM_LCD_MENUS)
-    for (uint8_t m = 0; m < PREHEAT_COUNT; ++m)
+    LOOP_L_N(m, PREHEAT_COUNT)
       SUBMENU_N_f(m, ui.get_preheat_label(m), MSG_PREHEAT_M_SETTINGS, _menu_configuration_preheat_settings);
   #endif
 

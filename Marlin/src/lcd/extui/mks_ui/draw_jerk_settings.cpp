@@ -22,6 +22,8 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
+#include "../../../inc/MarlinConfigPre.h"
+
 #if ALL(HAS_TFT_LVGL_UI, HAS_CLASSIC_JERK)
 
 #include "draw_ui.h"

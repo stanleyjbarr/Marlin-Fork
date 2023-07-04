@@ -131,7 +131,7 @@ void event_filament_runout(const uint8_t extruder) {
       MString<strlen(FILAMENT_RUNOUT_SCRIPT)> script;
       script.setf(F(FILAMENT_RUNOUT_SCRIPT), AS_CHAR(tool));
       #if ENABLED(FILAMENT_RUNOUT_SENSOR_DEBUG)
-        SERIAL_ECHOLNPGM("Runout Command: ", &script);
+        SERIAL_ECHOLNPGM("Runout Command: ", script);
       #endif
       queue.inject(&script);
     #else

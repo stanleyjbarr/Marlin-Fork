@@ -78,7 +78,7 @@ void TuneMenu::onRedraw(draw_mode_t what) {
        .tag(9).button(FILAMENT_POS, GET_TEXT_F(MSG_FILAMENT))
        #if ENABLED(BABYSTEPPING) && HAS_MULTI_HOTEND
          .tag(4).button(NUDGE_NOZ_POS, GET_TEXT_F(MSG_NUDGE_NOZZLE))
-       #elif ALL(HAS_LEVELING, HAS_BED_PROBE)
+       #elif BOTH(HAS_LEVELING, HAS_BED_PROBE)
          .tag(4).button(NUDGE_NOZ_POS, GET_TEXT_F(MSG_ZPROBE_ZOFFSET))
        #endif
        .tag(5).button(SPEED_POS, GET_TEXT_F(MSG_PRINT_SPEED))

@@ -602,7 +602,7 @@ void MarlinHAL::dma_init() {
 // HAL initialization task
 void MarlinHAL::init() {
   TERN_(DMA_IS_REQUIRED, dma_init());
-  #if HAS_MEDIA
+  #if ENABLED(SDSUPPORT)
     #if HAS_SD_DETECT && SD_CONNECTION_IS(ONBOARD)
       SET_INPUT_PULLUP(SD_DETECT_PIN);
     #endif
@@ -650,6 +650,10 @@ void MarlinHAL::adc_init() {
   #if ADC_IS_REQUIRED
     memset(adc_results, 0xFF, sizeof(adc_results));                         // Fill result with invalid values
 
+void MarlinHAL::adc_init() {
+  #if ADC_IS_REQUIRED
+    memset(adc_results, 0xFF, sizeof(adc_results));                         // Fill result with invalid values
+
     for (uint8_t pi = 0; pi < COUNT(adc_pins); ++pi)
       pinPeripheral(adc_pins[pi], PIO_ANALOG);
 
@@ -685,7 +689,7 @@ void MarlinHAL::adc_init() {
 
 void MarlinHAL::adc_start(const pin_t pin) {
   #if ADC_IS_REQUIRED
-    for (uint8_t pi = 0; pi < COUNT(adc_pins); ++pi)
+    LOOP_L_N(pi, COUNT(adc_pins))
       if (pin == adc_pins[pi]) { adc_result = adc_results[pi]; return; }
   #endif
 

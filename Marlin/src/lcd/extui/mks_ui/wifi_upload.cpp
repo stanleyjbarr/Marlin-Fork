@@ -22,6 +22,8 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
+#include "../../../inc/MarlinConfigPre.h"
+
 #if ALL(HAS_TFT_LVGL_UI, MKS_WIFI_MODULE)
 
 #include "draw_ui.h"
@@ -39,7 +41,7 @@
 extern SZ_USART_FIFO WifiRxFifo;
 
 void esp_port_begin(uint8_t interrupt);
-void wifi_delay(const uint16_t n);
+void wifi_delay(int n);
 
 #define ARRAY_SIZE(a) sizeof(a) / sizeof((a)[0])
 
@@ -628,7 +630,7 @@ void upload_spin() {
 }
 
 // Try to upload the given file at the given address
-void sendUpdateFile(const char *file, uint32_t address) {
+void SendUpdateFile(const char *file, uint32_t address) {
   const char * const fname = card.diveToFile(false, update_curDir, ESP_FIRMWARE_FILE);
   if (!update_file.open(update_curDir, fname, O_READ)) return;
 

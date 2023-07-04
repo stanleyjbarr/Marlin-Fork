@@ -54,6 +54,11 @@ Adafruit_NeoPixel Marlin_NeoPixel::adaneo1(NEOPIXEL_PIXELS, NEOPIXEL_PIN, NEOPIX
     set_background_color(background_color);
   }
 
+  void Marlin_NeoPixel::reset_background_color() {
+    constexpr uint8_t background_color[4] = NEOPIXEL_BKGD_COLOR;
+    set_background_color(background_color);
+  }
+
   void Marlin_NeoPixel::set_background_off() {
     #ifndef NEOPIXEL_BKGD_TIMEOUT_COLOR
       #define NEOPIXEL_BKGD_TIMEOUT_COLOR { 0, 0, 0, 0 }

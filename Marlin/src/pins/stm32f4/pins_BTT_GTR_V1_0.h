@@ -315,9 +315,9 @@
 //#define TEMP_0_MOSI_PIN                   ...   // For MAX31865
 
 #define TEMP_1_CS_PIN                       PH2   // M5 K-TEMP
-#define TEMP_1_SCK_PIN            TEMP_0_SCK_PIN
-#define TEMP_1_MISO_PIN          TEMP_0_MISO_PIN
-//#define TEMP_1_MOSI_PIN        TEMP_0_MOSI_PIN
+#define TEMP_1_SCK_PIN           TEMP_0_SCK_PIN
+#define TEMP_1_MISO_PIN         TEMP_0_MISO_PIN
+//#define TEMP_1_MOSI_PIN       TEMP_0_MOSI_PIN
 
 //
 // Heaters / Fans
@@ -432,7 +432,7 @@
     #define BTN_EN1                  EXP1_03_PIN
     #define BTN_EN2                  EXP1_05_PIN
 
-    #define LCD_PINS_EN              EXP1_08_PIN
+    #define LCD_PINS_ENABLE          EXP1_08_PIN
     #define LCD_PINS_D4              EXP1_06_PIN
 
   #elif ENABLED(MKS_MINI_12864)
@@ -451,7 +451,7 @@
     #define BTN_EN1                  EXP2_03_PIN
     #define BTN_EN2                  EXP2_05_PIN
 
-    #define LCD_PINS_EN              EXP1_03_PIN
+    #define LCD_PINS_ENABLE          EXP1_03_PIN
     #define LCD_PINS_D4              EXP1_05_PIN
 
     #if ENABLED(FYSETC_MINI_12864)
@@ -464,7 +464,7 @@
 
       //#define LCD_BACKLIGHT_PIN           -1
       #define LCD_RESET_PIN          EXP1_05_PIN  // Must be high or open for LCD to operate normally.
-      #if ANY(FYSETC_MINI_12864_1_2, FYSETC_MINI_12864_2_0)
+      #if EITHER(FYSETC_MINI_12864_1_2, FYSETC_MINI_12864_2_0)
         #ifndef RGB_LED_R_PIN
           #define RGB_LED_R_PIN      EXP1_06_PIN
         #endif

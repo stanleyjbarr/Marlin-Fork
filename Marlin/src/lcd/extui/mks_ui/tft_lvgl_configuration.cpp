@@ -36,11 +36,10 @@
 #include <lvgl.h>
 
 #include "../../../MarlinCore.h"
-#include "../../marlinui.h"
-
 #include "../../../inc/MarlinConfig.h"
 
 #include HAL_PATH(../../.., tft/xpt2046.h)
+#include "../../marlinui.h"
 XPT2046 touch;
 
 #if ENABLED(POWER_LOSS_RECOVERY)
@@ -51,7 +50,7 @@ XPT2046 touch;
   #include "../../../module/servo.h"
 #endif
 
-#if ANY(PROBE_TARE, HAS_Z_SERVO_PROBE)
+#if EITHER(PROBE_TARE, HAS_Z_SERVO_PROBE)
   #include "../../../module/probe.h"
 #endif
 
@@ -137,6 +136,7 @@ void tft_lvgl_init() {
   #if ENABLED(USB_FLASH_DRIVE_SUPPORT)
     uint16_t usb_flash_loop = 1000;
     #if ENABLED(MULTI_VOLUME) && !HAS_SD_HOST_DRIVE
+      SET_INPUT_PULLUP(SD_DETECT_PIN);
       if (IS_SD_INSERTED())
         card.changeMedia(&card.media_driver_sdcard);
       else
@@ -156,13 +156,13 @@ void tft_lvgl_init() {
 
   hal.watchdog_refresh();     // LVGL init takes time
 
-  #if HAS_MEDIA
+  #if ENABLED(SDSUPPORT)
     UpdateAssets();
     hal.watchdog_refresh();   // LVGL init takes time
     TERN_(MKS_TEST, mks_test_get());
   #endif
 
-  touch.init();
+  touch.Init();
 
   lv_init();
 
@@ -249,7 +249,7 @@ void tft_lvgl_init() {
 
   if (ready) lv_draw_ready_print();
 
-  #if ALL(MKS_TEST, HAS_MEDIA)
+  #if BOTH(MKS_TEST, SDSUPPORT)
     if (mks_test_flag == 0x1E) mks_gpio_test();
   #endif
 }
@@ -264,7 +264,7 @@ void dmc_tc_handler(struct __DMA_HandleTypeDef * hdma) {
   #if ENABLED(USE_SPI_DMA_TC)
     lv_disp_flush_ready(disp_drv_p);
     lcd_dma_trans_lock = false;
-    TFT_SPI::abort();
+    TFT_SPI::Abort();
   #endif
 }
 
@@ -278,10 +278,10 @@ void my_disp_flush(lv_disp_drv_t * disp, const lv_area_t * area, lv_color_t * co
 
   #if ENABLED(USE_SPI_DMA_TC)
     lcd_dma_trans_lock = true;
-    SPI_TFT.tftio.writeSequenceIT((uint16_t*)color_p, width * height);
+    SPI_TFT.tftio.WriteSequenceIT((uint16_t*)color_p, width * height);
     TFT_SPI::DMAtx.XferCpltCallback = dmc_tc_handler;
   #else
-    SPI_TFT.tftio.writeSequence((uint16_t*)color_p, width * height);
+    SPI_TFT.tftio.WriteSequence((uint16_t*)color_p, width * height);
     lv_disp_flush_ready(disp_drv_p); // Indicate you are ready with the flushing
   #endif
 
