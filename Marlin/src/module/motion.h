@@ -406,7 +406,17 @@ void remember_feedrate_scaling_off();
 void restore_feedrate_and_scaling();
 
 #if HAS_Z_AXIS
-  void do_z_clearance(const_float_t zclear, const bool lower_allowed=false);
+  #if ALL(DWIN_LCD_PROUI, INDIVIDUAL_AXIS_HOMING_SUBMENU, MESH_BED_LEVELING)
+    #define Z_POST_CLEARANCE hmiData.z_after_homing
+  #elif defined(Z_AFTER_HOMING)
+    #define Z_POST_CLEARANCE Z_AFTER_HOMING
+  #else
+    #define Z_POST_CLEARANCE Z_CLEARANCE_FOR_HOMING
+  #endif
+  void do_z_clearance(const_float_t zclear, const bool with_probe=true, const bool lower_allowed=false);
+  void do_z_clearance_by(const_float_t zclear);
+  void do_move_after_z_homing();
+  inline void do_z_post_clearance() { do_z_clearance(Z_POST_CLEARANCE); }
 #else
   inline void do_z_clearance(float, bool=false) {}
 #endif

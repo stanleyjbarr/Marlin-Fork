@@ -31,7 +31,7 @@
 
 //#define DISPLAY_CHARSET_ISO10646_KANA
 
-namespace Language_jp_kana {
+namespace LanguageNarrow_jp_kana {
   using namespace Language_en; // Inherit undefined strings from English
 
   constexpr uint8_t CHARSIZE              = 3;
@@ -45,47 +45,47 @@ namespace Language_jp_kana {
   LSTR MSG_MEDIA_INSERTED                 = _UxGT("メディアガソウニュウサレマシタ");        // "Card inserted"
   LSTR MSG_MEDIA_REMOVED                  = _UxGT("メディアガアリマセン");               // "Card removed"
   LSTR MSG_RELEASE_MEDIA                  = _UxGT("メディアノトリダシ");
-  LSTR MSG_LCD_ENDSTOPS                   = _UxGT("エンドストップ");                  // "Endstops" // Max length 8 characters
-  LSTR MSG_MAIN                           = _UxGT("メイン");                       // "Main"
-  LSTR MSG_RUN_AUTO_FILES                 = _UxGT("ジドウカイシ");                   // "Autostart"
-  LSTR MSG_DISABLE_STEPPERS               = _UxGT("モーターデンゲン オフ");            // "Disable steppers"
-  LSTR MSG_DEBUG_MENU                     = _UxGT("デバッグメニュー");                // "Debug Menu"
-  LSTR MSG_PROGRESS_BAR_TEST              = _UxGT("プログレスバー テスト");            // "Progress Bar Test"
-  LSTR MSG_AUTO_HOME                      = _UxGT("ゲンテンフッキ");                  // "Auto home"
-  LSTR MSG_AUTO_HOME_X                    = _UxGT("Xジク ゲンテンフッキ");             // "Home X"
-  LSTR MSG_AUTO_HOME_Y                    = _UxGT("Yジク ゲンテンフッキ");             // "Home Y"
-  LSTR MSG_AUTO_HOME_Z                    = _UxGT("Zジク ゲンテンフッキ");             // "Home Z"
-  LSTR MSG_LEVEL_BED_HOMING               = _UxGT("ゲンテンフッキチュウ");              // "Homing XYZ"
-  LSTR MSG_LEVEL_BED_WAITING              = _UxGT("レベリングカイシ");                // "Click to Begin"
-  LSTR MSG_LEVEL_BED_NEXT_POINT           = _UxGT("ツギノソクテイテンヘ");             // "Next Point"
-  LSTR MSG_LEVEL_BED_DONE                 = _UxGT("レベリングカンリョウ");              // "Leveling Done!"
-  LSTR MSG_SET_HOME_OFFSETS               = _UxGT("キジュンオフセットセッテイ");         // "Set home offsets"
-  LSTR MSG_HOME_OFFSETS_APPLIED           = _UxGT("オフセットガテキヨウサレマシタ");       // "Offsets applied"
-  #if HAS_PREHEAT
-    LSTR MSG_PREHEAT_1                    = PREHEAT_1_LABEL _UxGT(" ヨネツ");       // "Preheat " PREHEAT_1_LABEL
-    LSTR MSG_PREHEAT_1_H                  = PREHEAT_1_LABEL _UxGT(" ヨネツ ~");       // "Preheat " PREHEAT_1_LABEL
-    LSTR MSG_PREHEAT_1_END                = PREHEAT_1_LABEL _UxGT(" ヨネツノズル");  // " Nozzle"
-    LSTR MSG_PREHEAT_1_END_E              = PREHEAT_1_LABEL _UxGT(" ヨネツノズル ~");  // " Nozzle"
-    LSTR MSG_PREHEAT_1_ALL                = PREHEAT_1_LABEL _UxGT(" スベテヨネツ");  // " All"
-    LSTR MSG_PREHEAT_1_BEDONLY            = PREHEAT_1_LABEL _UxGT(" ベッドヨネツ");  // " Bed"
-    LSTR MSG_PREHEAT_1_SETTINGS           = PREHEAT_1_LABEL _UxGT(" ヨネツセッテイ");  // " conf"
+  LSTR MSG_LCD_ENDSTOPS                   = _UxGT("エンドストップ"); // "Endstops" // Max length 8 characters
+  LSTR MSG_MAIN_MENU                      = _UxGT("メイン"); // "Main"
+  LSTR MSG_RUN_AUTO_FILES                 = _UxGT("ジドウカイシ"); // "Autostart"
+  LSTR MSG_DISABLE_STEPPERS               = _UxGT("モーターデンゲン オフ"); // "Disable steppers"
+  LSTR MSG_DEBUG_MENU                     = _UxGT("デバッグメニュー"); // "Debug Menu"
+  LSTR MSG_PROGRESS_BAR_TEST              = _UxGT("プログレスバー テスト"); // "Progress Bar Test"
+  LSTR MSG_AUTO_HOME                      = _UxGT("ゲンテンフッキ"); // "Auto home"
+  LSTR MSG_AUTO_HOME_X                    = _UxGT("Xジク ゲンテンフッキ"); // "Home X"
+  LSTR MSG_AUTO_HOME_Y                    = _UxGT("Yジク ゲンテンフッキ"); // "Home Y"
+  LSTR MSG_AUTO_HOME_Z                    = _UxGT("Zジク ゲンテンフッキ"); // "Home Z"
+  LSTR MSG_LEVEL_BED_HOMING               = _UxGT("ゲンテンフッキチュウ"); // "Homing XYZ"
+  LSTR MSG_LEVEL_BED_WAITING              = _UxGT("レベリングカイシ"); // "Click to Begin"
+  LSTR MSG_LEVEL_BED_NEXT_POINT           = _UxGT("ツギノソクテイテンヘ"); // "Next Point"
+  LSTR MSG_LEVEL_BED_DONE                 = _UxGT("レベリングカンリョウ"); // "Leveling Done!"
+  LSTR MSG_SET_HOME_OFFSETS               = _UxGT("キジュンオフセットセッテイ"); // "Set home offsets"
+  LSTR MSG_HOME_OFFSETS_APPLIED           = _UxGT("オフセットガテキヨウサレマシタ"); // "Offsets applied"
 
-    LSTR MSG_PREHEAT_M                    = _UxGT("$ ヨネツ");       // "Preheat " PREHEAT_1_LABEL
-    LSTR MSG_PREHEAT_M_H                  = _UxGT("$ ヨネツ ~");       // "Preheat " PREHEAT_1_LABEL
-    LSTR MSG_PREHEAT_M_END                = _UxGT("$ ヨネツノズル");  // " Nozzle"
-    LSTR MSG_PREHEAT_M_END_E              = _UxGT("$ ヨネツノズル ~");  // " Nozzle"
-    LSTR MSG_PREHEAT_M_ALL                = _UxGT("$ スベテヨネツ");  // " All"
-    LSTR MSG_PREHEAT_M_BEDONLY            = _UxGT("$ ベッドヨネツ");  // " Bed"
-    LSTR MSG_PREHEAT_M_SETTINGS           = _UxGT("$ ヨネツセッテイ");  // " conf"
-  #endif
-  LSTR MSG_COOLDOWN                       = _UxGT("カネツテイシ");                  // "Cooldown"
-  LSTR MSG_SWITCH_PS_ON                   = _UxGT("デンゲン オン");                 // "Switch power on"
-  LSTR MSG_SWITCH_PS_OFF                  = _UxGT("デンゲン オフ");                 // "Switch power off"
-  LSTR MSG_EXTRUDE                        = _UxGT("オシダシ");                     // "Extrude"
-  LSTR MSG_RETRACT                        = _UxGT("ヒキコミセッテイ");                // "Retract"
-  LSTR MSG_MOVE_AXIS                      = _UxGT("ジクイドウ");                    // "Move axis"
-  LSTR MSG_BED_LEVELING                   = _UxGT("ベッドレベリング");                // "Bed leveling"
-  LSTR MSG_LEVEL_BED                      = _UxGT("ベッドレベリング");                // "Level bed"
+  LSTR MSG_PREHEAT_1                      = PREHEAT_1_LABEL _UxGT(" ヨネツ"); // "Preheat " PREHEAT_1_LABEL
+  LSTR MSG_PREHEAT_1_H                    = PREHEAT_1_LABEL _UxGT(" ヨネツ ~"); // "Preheat " PREHEAT_1_LABEL
+  LSTR MSG_PREHEAT_1_END                  = PREHEAT_1_LABEL _UxGT(" ヨネツノズル"); // " Nozzle"
+  LSTR MSG_PREHEAT_1_END_E                = PREHEAT_1_LABEL _UxGT(" ヨネツノズル ~"); // " Nozzle"
+  LSTR MSG_PREHEAT_1_ALL                  = PREHEAT_1_LABEL _UxGT(" スベテヨネツ"); // " All"
+  LSTR MSG_PREHEAT_1_BEDONLY              = PREHEAT_1_LABEL _UxGT(" ベッドヨネツ"); // " Bed"
+  LSTR MSG_PREHEAT_1_SETTINGS             = PREHEAT_1_LABEL _UxGT(" ヨネツセッテイ"); // " conf"
+
+  LSTR MSG_PREHEAT_M                      = _UxGT("$ ヨネツ"); // "Preheat " PREHEAT_1_LABEL
+  LSTR MSG_PREHEAT_M_H                    = _UxGT("$ ヨネツ ~"); // "Preheat " PREHEAT_1_LABEL
+  LSTR MSG_PREHEAT_M_END                  = _UxGT("$ ヨネツノズル"); // " Nozzle"
+  LSTR MSG_PREHEAT_M_END_E                = _UxGT("$ ヨネツノズル ~"); // " Nozzle"
+  LSTR MSG_PREHEAT_M_ALL                  = _UxGT("$ スベテヨネツ"); // " All"
+  LSTR MSG_PREHEAT_M_BEDONLY              = _UxGT("$ ベッドヨネツ"); // " Bed"
+  LSTR MSG_PREHEAT_M_SETTINGS             = _UxGT("$ ヨネツセッテイ"); // " conf"
+
+  LSTR MSG_COOLDOWN                       = _UxGT("カネツテイシ"); // "Cooldown"
+  LSTR MSG_SWITCH_PS_ON                   = _UxGT("デンゲン オン"); // "Switch power on"
+  LSTR MSG_SWITCH_PS_OFF                  = _UxGT("デンゲン オフ"); // "Switch power off"
+  LSTR MSG_EXTRUDE                        = _UxGT("オシダシ"); // "Extrude"
+  LSTR MSG_RETRACT                        = _UxGT("ヒキコミセッテイ"); // "Retract"
+  LSTR MSG_MOVE_AXIS                      = _UxGT("ジクイドウ"); // "Move axis"
+  LSTR MSG_BED_LEVELING                   = _UxGT("ベッドレベリング"); // "Bed leveling"
+  LSTR MSG_LEVEL_BED                      = _UxGT("ベッドレベリング"); // "Level bed"
 
   LSTR MSG_MOVING                         = _UxGT("イドウチュウ");                   // "Moving..."
   LSTR MSG_FREE_XY                        = _UxGT("XYジク カイホウ");                // "Free XY"
@@ -246,4 +246,21 @@ namespace Language_jp_kana {
   LSTR MSG_CUSTOM_COMMANDS                = _UxGT("ユーザーコマンド");
   LSTR MSG_PRINT_PAUSED                   = _UxGT("プリントガイチジテイシサレマシタ");
   LSTR MSG_PRINTING                       = _UxGT("プリントチュウ...");
+}
+
+namespace LanguageWide_jp_kana {
+  using namespace LanguageNarrow_jp_kana;
+  #if LCD_WIDTH >= 20 || HAS_DWIN_E3V2
+  #endif
+}
+
+namespace LanguageTall_jp_kana {
+  using namespace LanguageWide_jp_kana;
+  #if LCD_HEIGHT >= 4
+    // Filament Change screens show up to 3 lines on a 4-line display
+  #endif
+}
+
+namespace Language_jp_kana {
+  using namespace LanguageTall_jp_kana;
 }

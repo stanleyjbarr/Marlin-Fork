@@ -356,7 +356,9 @@ void GcodeSuite::G28() {
 
     endstops.enable(true); // Enable endstops for next homing move
 
-    bool finalRaiseZ = false;
+    #if HAS_Z_AXIS
+      bool finalRaiseZ = false;
+    #endif
 
     #if ENABLED(DELTA)
 
@@ -487,17 +489,20 @@ void GcodeSuite::G28() {
 
     TERN_(IMPROVE_HOMING_RELIABILITY, end_slow_homing(saved_motion_state));
 
-    #if ENABLED(FOAMCUTTER_XYUV)
-      // skip homing of unused Z axis for foamcutters
-      if (doZ) set_axis_is_at_home(Z_AXIS);
-    #else
-      // Home Z last if homing towards the bed
-      #if HAS_Z_AXIS && DISABLED(HOME_Z_FIRST)
-        if (doZ) {
-          #if EITHER(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN)
-            stepper.set_all_z_lock(false);
-            stepper.set_separate_multi_axis(false);
-          #endif
+      #if ENABLED(FOAMCUTTER_XYUV)
+
+        // Skip homing of unused Z axis for foamcutters
+        if (doZ) set_axis_is_at_home(Z_AXIS);
+
+      #elif HAS_Z_AXIS
+
+        // Home Z last if homing towards the bed
+        #if DISABLED(HOME_Z_FIRST)
+          if (doZ) {
+            #if ANY(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN)
+              stepper.set_all_z_lock(false);
+              stepper.set_separate_multi_axis(false);
+            #endif
 
           #if ENABLED(Z_SAFE_HOMING)
             if (TERN1(POWER_LOSS_RECOVERY, !parser.seen_test('H'))) home_z_safely(); else homeaxis(Z_AXIS);

@@ -210,32 +210,30 @@ bool Has_Preview() {
 
 void Preview_DrawFromSD() {
   if (Has_Preview()) {
-    char buf[46];
-    char str_1[6] = "";
-    char str_2[6] = "";
-    char str_3[6] = "";
-    DWIN_Draw_Rectangle(1, HMI_data.Background_Color, 0, 0, DWIN_WIDTH, STATUS_Y - 1);
+    MString<45> buf;
+    char str_1[6] = "", str_2[6] = "", str_3[6] = "";
+    dwinDrawRectangle(1, hmiData.colorBackground, 0, 0, DWIN_WIDTH, STATUS_Y - 1);
     if (fileprop.time) {
-      sprintf_P(buf, PSTR("Estimated time: %i:%02i"), (uint16_t)fileprop.time / 3600, ((uint16_t)fileprop.time % 3600) / 60);
-      DWINUI::Draw_String(20, 10, buf);
+      buf.setf(F("Estimated time: %i:%02i"), (uint16_t)fileprop.time / 3600, ((uint16_t)fileprop.time % 3600) / 60);
+      DWINUI::drawString(20, 10, &buf);
     }
     if (fileprop.filament) {
-      sprintf_P(buf, PSTR("Filament used: %s m"), dtostrf(fileprop.filament, 1, 2, str_1));
-      DWINUI::Draw_String(20, 30, buf);
+      buf.setf(F("Filament used: %s m"), dtostrf(fileprop.filament, 1, 2, str_1));
+      DWINUI::drawString(20, 30, &buf);
     }
     if (fileprop.layer) {
-      sprintf_P(buf, PSTR("Layer height: %s mm"), dtostrf(fileprop.layer, 1, 2, str_1));
-      DWINUI::Draw_String(20, 50, buf);
+      buf.setf(F("Layer height: %s mm"), dtostrf(fileprop.layer, 1, 2, str_1));
+      DWINUI::drawString(20, 50, &buf);
     }
     if (fileprop.width) {
-      sprintf_P(buf, PSTR("Volume: %sx%sx%s mm"), dtostrf(fileprop.width, 1, 1, str_1), dtostrf(fileprop.length, 1, 1, str_2), dtostrf(fileprop.height, 1, 1, str_3));
-      DWINUI::Draw_String(20, 70, buf);
+      buf.setf(F("Volume: %sx%sx%s mm"), dtostrf(fileprop.width, 1, 1, str_1), dtostrf(fileprop.length, 1, 1, str_2), dtostrf(fileprop.height, 1, 1, str_3));
+      DWINUI::drawString(20, 70, &buf);
     }
-    DWINUI::Draw_Button(BTN_Print, 26, 290);
-    DWINUI::Draw_Button(BTN_Cancel, 146, 290);
-    DWIN_ICON_Show(0, 0, 1, 21, 90, 0x00);
-    Draw_Select_Highlight(true, 290);
-    DWIN_UpdateLCD();
+    DWINUI::drawButton(BTN_Print, 26, 290);
+    DWINUI::drawButton(BTN_Cancel, 146, 290);
+    Preview_Show();
+    drawSelectHighlight(true, 290);
+    dwinUpdateLCD();
   }
   else {
     HMI_flag.select_flag = 1;

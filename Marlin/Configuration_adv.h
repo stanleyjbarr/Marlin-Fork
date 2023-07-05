@@ -190,7 +190,7 @@
 
 /**
  * Hephestos 2 24V heated bed upgrade kit.
- * https://store.bq.com/en/heated-bed-kit-hephestos2
+ * https://www.en3dstudios.com/product/bq-hephestos-2-heated-bed-kit/
  */
 //#define HEPHESTOS2_HEATED_BED_KIT
 #if ENABLED(HEPHESTOS2_HEATED_BED_KIT)
@@ -2002,6 +2002,22 @@
       #define DGUS_UI_WAITING_STATUS 10
       #define DGUS_UI_WAITING_STATUS_PERIOD 8 // Increase to slower waiting status looping
     #endif
+
+  #elif DGUS_UI_IS(E3S1PRO)
+    /**
+     * The stock Ender-3 S1 Pro/Plus display firmware has rather poor SD file handling.
+     *
+     * The autoscroll is mainly useful for status messages, filenames, and the "About" page.
+     *
+     * NOTE: The Advanced SD Card option is affected by the stock touchscreen firmware, so
+     *       pages 5 and up will display "4/4". This may get fixed in a screen firmware update.
+     */
+    #define DGUS_SOFTWARE_AUTOSCROLL        // Enable long text software auto-scroll
+    #define DGUS_AUTOSCROLL_START_CYCLES 1  // Refresh cycles without scrolling at the beginning of text strings
+    #define DGUS_AUTOSCROLL_END_CYCLES 1    // ... at the end of text strings
+
+    #define DGUS_ADVANCED_SDCARD            // Allow more than 20 files and navigating directories
+    #define DGUS_USERCONFIRM                // Reuse the SD Card page to show various messages
   #endif
 #endif // HAS_DGUS_LCD
 
@@ -2501,7 +2517,7 @@
 // The number of linear moves that can be in the planner at once.
 // The value of BLOCK_BUFFER_SIZE must be a power of 2 (e.g., 8, 16, 32)
 #if BOTH(SDSUPPORT, DIRECT_STEPPING)
-  #define BLOCK_BUFFER_SIZE 16 
+  #define BLOCK_BUFFER_SIZE 16
 #elif ENABLED(SDSUPPORT)
   #define BLOCK_BUFFER_SIZE 16
 #else
@@ -2856,11 +2872,11 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(Y)
-    #define Y_CURRENT 580      
-    #define Y_CURRENT_HOME Y_CURRENT 
-    #define Y_MICROSTEPS 16    
-    #define Y_RSENSE 0.11         
-    #define Y_CHAIN_POS -1     
+    #define Y_CURRENT 580
+    #define Y_CURRENT_HOME Y_CURRENT
+    #define Y_MICROSTEPS 16
+    #define Y_RSENSE 0.11
+    #define Y_CHAIN_POS -1
     //#define Y_INTERPOLATE  true
     //#define Y_HOLD_MULTIPLIER 0.5
   #endif
@@ -2876,11 +2892,11 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(Z)
-    #define Z_CURRENT 580      
-    #define Z_CURRENT_HOME Z_CURRENT 
-    #define Z_MICROSTEPS 16    
-    #define Z_RSENSE 0.11         
-    #define Z_CHAIN_POS -1     
+    #define Z_CURRENT 580
+    #define Z_CURRENT_HOME Z_CURRENT
+    #define Z_MICROSTEPS 16
+    #define Z_RSENSE 0.11
+    #define Z_CHAIN_POS -1
     //#define Z_INTERPOLATE  true
     //#define Z_HOLD_MULTIPLIER 0.5
   #endif
@@ -2976,10 +2992,10 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(E0)
-    #define E0_CURRENT 700     
-    #define E0_MICROSTEPS 16   
-    #define E0_RSENSE 0.11        
-    #define E0_CHAIN_POS -1    
+    #define E0_CURRENT 700
+    #define E0_MICROSTEPS 16
+    #define E0_RSENSE 0.11
+    #define E0_CHAIN_POS -1
     //#define E0_INTERPOLATE true
     //#define E0_HOLD_MULTIPLIER 0.5
   #endif
@@ -3226,27 +3242,27 @@
   //#define HYBRID_THRESHOLD
 
   #define X_HYBRID_THRESHOLD 100      // [mm/s]
-  #define X2_HYBRID_THRESHOLD 100   
-  #define Y_HYBRID_THRESHOLD 100    
-  #define Y2_HYBRID_THRESHOLD 100   
-  #define Z_HYBRID_THRESHOLD 3      
-  #define Z2_HYBRID_THRESHOLD 3     
-  #define Z3_HYBRID_THRESHOLD 3     
-  #define Z4_HYBRID_THRESHOLD 3     
+  #define X2_HYBRID_THRESHOLD 100
+  #define Y_HYBRID_THRESHOLD 100
+  #define Y2_HYBRID_THRESHOLD 100
+  #define Z_HYBRID_THRESHOLD 3
+  #define Z2_HYBRID_THRESHOLD 3
+  #define Z3_HYBRID_THRESHOLD 3
+  #define Z4_HYBRID_THRESHOLD 3
   #define I_HYBRID_THRESHOLD 3        // [linear=mm/s, rotational=°/s]
   #define J_HYBRID_THRESHOLD 3        // [linear=mm/s, rotational=°/s]
   #define K_HYBRID_THRESHOLD 3        // [linear=mm/s, rotational=°/s]
   #define U_HYBRID_THRESHOLD 3        // [mm/s]
-  #define V_HYBRID_THRESHOLD 3      
-  #define W_HYBRID_THRESHOLD 3      
-  #define E0_HYBRID_THRESHOLD 30    
-  #define E1_HYBRID_THRESHOLD 30    
-  #define E2_HYBRID_THRESHOLD 30    
-  #define E3_HYBRID_THRESHOLD 30    
-  #define E4_HYBRID_THRESHOLD 30    
-  #define E5_HYBRID_THRESHOLD 30    
-  #define E6_HYBRID_THRESHOLD 30    
-  #define E7_HYBRID_THRESHOLD 30    
+  #define V_HYBRID_THRESHOLD 3
+  #define W_HYBRID_THRESHOLD 3
+  #define E0_HYBRID_THRESHOLD 30
+  #define E1_HYBRID_THRESHOLD 30
+  #define E2_HYBRID_THRESHOLD 30
+  #define E3_HYBRID_THRESHOLD 30
+  #define E4_HYBRID_THRESHOLD 30
+  #define E5_HYBRID_THRESHOLD 30
+  #define E6_HYBRID_THRESHOLD 30
+  #define E7_HYBRID_THRESHOLD 30
 
   /**
    * Use StallGuard to home / probe X, Y, Z.
@@ -3396,7 +3412,7 @@
   //#define PHOTOGRAPH_PIN 23
 
   // Canon Hack Development Kit
-  // https://captain-slow.dk/2014/03/09/3d-printing-timelapses/
+  // https://web.archive.org/web/20200920094805/https://captain-slow.dk/2014/03/09/3d-printing-timelapses/
   //#define CHDK_PIN        4
 
   // Optional second move with delay to trigger the camera shutter
@@ -4014,7 +4030,7 @@
  * Wiki: https://wiki.aus3d.com.au/Magnetic_Encoder
  * Github: https://github.com/Aus3D/MagneticEncoder
  *
- * Supplier: https://aus3d.com.au/magnetic-encoder-module
+ * Supplier: https://aus3d.com.au/products/magnetic-encoder-module
  * Alternative Supplier: https://reliabuild3d.com/
  *
  * Reliabuild encoders have been modified to improve reliability.
@@ -4284,7 +4300,7 @@
   /**
    * Using a sensor like the MMU2S
    * This mode requires a MK3S extruder with a sensor at the extruder idler, like the MMU2S.
-   * See https://help.prusa3d.com/en/guide/3b-mk3s-mk2-5s-extruder-upgrade_41560, step 11
+   * See https://help.prusa3d.com/guide/3b-mk3s-mk2-5s-extruder-upgrade_41560#42048, step 11
    */
   #if HAS_PRUSA_MMU2S
     #define MMU2_C0_RETRY   5             // Number of retries (total time = timeout*retries)

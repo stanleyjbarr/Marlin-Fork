@@ -366,7 +366,6 @@ public:
   static void host_notify_P(PGM_P const fstr);
   static void host_notify(FSTR_P const fstr) { host_notify_P(FTOP(fstr)); }
   static void host_notify(const char * const cstr);
-  static void host_status();
 
   #if HAS_STATUS_MESSAGE
 
@@ -429,7 +428,10 @@ public:
     static void abort_print();
     static void pause_print();
     static void resume_print();
-    static void flow_fault();
+
+    #if ENABLED(FLOWMETER_SAFETY)
+      static void flow_fault();
+    #endif
 
     #if BOTH(HAS_MARLINUI_MENU, PSU_CONTROL)
       static void poweroff();

@@ -28,10 +28,10 @@
  * Date: 2022/10/07
  */
 
-class ESDiagClass {
+class ESDiag {
 public:
-  void Draw();
-  void Update();
+  static void draw();
+  static void update();
 };
 
-extern ESDiagClass ESDiag;
+extern ESDiag esDiag;
