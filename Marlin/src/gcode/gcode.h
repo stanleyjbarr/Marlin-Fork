@@ -300,7 +300,6 @@
  * M913 - Set HYBRID_THRESHOLD speed. (Requires HYBRID_THRESHOLD)
  * M914 - Set StallGuard sensitivity. (Requires SENSORLESS_HOMING or SENSORLESS_PROBING)
  * M919 - Get or Set motor Chopper Times (time_off, hysteresis_end, hysteresis_start) using axis codes XYZE, etc. If no parameters are given, report. (Requires at least one _DRIVER_TYPE defined as TMC2130/2160/5130/5160/2208/2209/2660)
- * M936 - OTA update firmware. (Requires OTA_FIRMWARE_UPDATE)
  * M951 - Set Magnetic Parking Extruder parameters. (Requires MAGNETIC_PARKING_EXTRUDER)
  * M3426 - Read MCP3426 ADC over I2C. (Requires HAS_MCP3426_ADC)
  * M7219 - Control Max7219 Matrix LEDs. (Requires MAX7219_GCODE)
@@ -345,20 +344,14 @@ enum AxisRelative : uint8_t {
   #if HAS_EXTRUDERS
     , E_MODE_ABS, E_MODE_REL
   #endif
-  , NUM_REL_MODES
 };
-typedef bits_t(NUM_REL_MODES) relative_t;
 
 extern const char G28_STR[];
 
 class GcodeSuite {
 public:
 
-  static relative_t axis_relative;
-
-  GcodeSuite() { // Relative motion mode for each logical axis
-    axis_relative = AxisBits(AXIS_RELATIVE_MODES).bits;
-  }
+  static axis_bits_t axis_relative;
 
   static bool axis_is_relative(const AxisEnum a) {
     #if HAS_EXTRUDERS
@@ -410,7 +403,7 @@ public:
   }
   FORCE_INLINE static void reset_stepper_timeout(const millis_t ms=millis()) { previous_move_ms = ms; }
 
-  #if HAS_DISABLE_IDLE_AXES
+  #if HAS_DISABLE_INACTIVE_AXIS
     static millis_t stepper_inactive_time;
     FORCE_INLINE static bool stepper_inactive_timeout(const millis_t ms=millis()) {
       return ELAPSED(ms, previous_move_ms + stepper_inactive_time);
@@ -483,9 +476,6 @@ public:
 private:
 
   friend class MarlinSettings;
-  #if ENABLED(ARC_SUPPORT)
-    friend void plan_arc(const xyze_pos_t&, const ab_float_t&, const bool, const uint8_t);
-  #endif
 
   #if ENABLED(MARLIN_DEV_MODE)
     static void D(const int16_t dcode);
@@ -592,7 +582,7 @@ private:
     static void G59();
   #endif
 
-  #if ALL(PTC_PROBE, PTC_BED)
+  #if BOTH(PTC_PROBE, PTC_BED)
     static void G76();
   #endif
 
@@ -624,11 +614,11 @@ private:
     static void M7();
   #endif
 
-  #if ANY(AIR_ASSIST, COOLANT_FLOOD)
+  #if EITHER(AIR_ASSIST, COOLANT_FLOOD)
     static void M8();
   #endif
 
-  #if ANY(AIR_ASSIST, COOLANT_CONTROL)
+  #if EITHER(AIR_ASSIST, COOLANT_CONTROL)
     static void M9();
   #endif
 
@@ -665,7 +655,7 @@ private:
 
   static void M31();
 
-  #if HAS_MEDIA
+  #if ENABLED(SDSUPPORT)
     #if HAS_MEDIA_SUBCALLS
       static void M32();
     #endif
@@ -727,9 +717,10 @@ private:
 
   #if ENABLED(BD_SENSOR)
     static void M102();
+    static void M102_report(const bool forReplay=true);
   #endif
 
-  #if HAS_HOTEND
+  #if HAS_EXTRUDERS
     static void M104_M109(const bool isM109);
     FORCE_INLINE static void M104() { M104_M109(false); }
     FORCE_INLINE static void M109() { M104_M109(true); }
@@ -827,7 +818,7 @@ private:
     static void M154();
   #endif
 
-  #if ALL(AUTO_REPORT_TEMPERATURES, HAS_TEMP_SENSOR)
+  #if BOTH(AUTO_REPORT_TEMPERATURES, HAS_TEMP_SENSOR)
     static void M155();
   #endif
 
@@ -1106,7 +1097,7 @@ private:
     static void M575();
   #endif
 
-  #if HAS_ZV_SHAPING
+  #if HAS_SHAPING
     static void M593();
     static void M593_report(const bool forReplay=true);
   #endif
@@ -1126,7 +1117,7 @@ private:
     static void M665_report(const bool forReplay=true);
   #endif
 
-  #if ANY(DELTA, HAS_EXTRA_ENDSTOPS)
+  #if EITHER(DELTA, HAS_EXTRA_ENDSTOPS)
     static void M666();
     static void M666_report(const bool forReplay=true);
   #endif
@@ -1229,7 +1220,7 @@ private:
     static void M995();
   #endif
 
-  #if SPI_FLASH_BACKUP
+  #if BOTH(SPI_FLASH, SDSUPPORT)
     static void M993();
     static void M994();
   #endif
@@ -1251,7 +1242,7 @@ private:
     static void M423_report(const bool forReplay=true);
   #endif
 
-  #if HAS_MEDIA
+  #if ENABLED(SDSUPPORT)
     static void M1001();
   #endif
 

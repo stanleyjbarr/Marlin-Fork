@@ -22,6 +22,8 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
+#include "../../../inc/MarlinConfigPre.h"
+
 #if ALL(HAS_TFT_LVGL_UI, TOUCH_SCREEN_CALIBRATION)
 
 #include "draw_ui.h"

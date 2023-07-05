@@ -203,7 +203,7 @@
 
 #if HAS_MEDIA
 
-  #if DISABLED(ONBOARD_SDIO)
+  #if DISABLED(SDIO_SUPPORT)
     #define SOFTWARE_SPI
     #define SDSS                            PC11
     #define SD_SS_PIN                       SDSS

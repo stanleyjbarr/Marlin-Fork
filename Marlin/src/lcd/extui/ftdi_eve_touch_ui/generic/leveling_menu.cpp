@@ -25,7 +25,7 @@
 
 #ifdef FTDI_LEVELING_MENU
 
-#if ALL(HAS_BED_PROBE,BLTOUCH)
+#if BOTH(HAS_BED_PROBE,BLTOUCH)
   #include "../../../../feature/bltouch.h"
 #endif
 
@@ -103,7 +103,7 @@ void LevelingMenu::onRedraw(draw_mode_t what) {
 bool LevelingMenu::onTouchEnd(uint8_t tag) {
   switch (tag) {
     case 1: GOTO_PREVIOUS(); break;
-    #if ANY(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION)
+    #if EITHER(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION)
       case 2: SpinnerDialogBox::enqueueAndWait(F("G34")); break;
     #endif
     #if HAS_BED_PROBE

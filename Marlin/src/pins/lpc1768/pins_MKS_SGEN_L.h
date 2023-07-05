@@ -226,6 +226,15 @@
 #endif
 
 //
+// Power Supply Control
+//
+#if ENABLED(MKS_PWC)
+  #define PS_ON_PIN                        P2_00  // SERVO1
+  #define KILL_PIN                         P1_24  // Z+
+  #define KILL_PIN_STATE                    HIGH
+#endif
+
+//
 // Misc. Functions
 //
 #define LED_PIN                            P1_18  // Used as a status indicator
@@ -290,7 +299,7 @@
     #define BTN_EN1                  EXP1_03_PIN
     #define BTN_EN2                  EXP1_05_PIN
 
-    #define LCD_PINS_EN              EXP1_08_PIN
+    #define LCD_PINS_ENABLE          EXP1_08_PIN
     #define LCD_PINS_D4              EXP1_06_PIN
 
   #elif HAS_SPI_TFT                               // Config for Classic UI (emulated DOGM) and Color UI
@@ -354,7 +363,7 @@
 
       #define LCD_PINS_RS            EXP1_04_PIN
 
-      #define LCD_PINS_EN            EXP1_03_PIN
+      #define LCD_PINS_ENABLE        EXP1_03_PIN
       #define LCD_PINS_D4            EXP1_05_PIN
 
       #if ENABLED(FYSETC_MINI_12864)

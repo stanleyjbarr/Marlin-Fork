@@ -231,9 +231,10 @@
 #define STR_PID_DEBUG_INPUT                 ": Input "
 #define STR_PID_DEBUG_OUTPUT                " Output "
 #define STR_INVALID_EXTRUDER_NUM            " - Invalid extruder number !"
-#define STR_MPC_AUTOTUNE_START              "MPC Autotune start for " STR_E
-#define STR_MPC_AUTOTUNE_INTERRUPTED        "MPC Autotune interrupted!"
-#define STR_MPC_AUTOTUNE_FINISHED           "MPC Autotune finished! Put the constants below into Configuration.h"
+#define STR_MPC_AUTOTUNE                    "MPC Autotune"
+#define STR_MPC_AUTOTUNE_START              " start for " STR_E
+#define STR_MPC_AUTOTUNE_INTERRUPTED        " interrupted!"
+#define STR_MPC_AUTOTUNE_FINISHED           " finished! Put the constants below into Configuration.h"
 #define STR_MPC_COOLING_TO_AMBIENT          "Cooling to ambient"
 #define STR_MPC_HEATING_PAST_200            "Heating to over 200C"
 #define STR_MPC_MEASURING_AMBIENT           "Measuring ambient heatloss at "
@@ -243,7 +244,6 @@
 #define STR_HEATER_CHAMBER                  "chamber"
 #define STR_COOLER                          "cooler"
 #define STR_MOTHERBOARD                     "motherboard"
-#define STR_SOC                             "soc"
 #define STR_PROBE                           "probe"
 #define STR_REDUNDANT                       "redundant "
 #define STR_LASER_TEMP                      "laser temperature"
@@ -278,11 +278,9 @@
 // Settings Report Strings
 #define STR_Z_AUTO_ALIGN                    "Z Auto-Align"
 #define STR_BACKLASH_COMPENSATION           "Backlash compensation"
-#define STR_FT_MOTION                       "Fixed-Time Motion"
 #define STR_S_SEG_PER_SEC                   "S<seg-per-sec>"
 #define STR_DELTA_SETTINGS                  "Delta (L<diagonal-rod> R<radius> H<height> S<seg-per-sec> XYZ<tower-angle-trim> ABC<rod-trim>)"
 #define STR_SCARA_SETTINGS                  "SCARA"
-#define STR_POLAR_SETTINGS                  "Polar"
 #define STR_POLARGRAPH_SETTINGS             "Polargraph"
 #define STR_SCARA_P_T_Z                     "P<theta-psi-offset> T<theta-offset> Z<home-offset>"
 #define STR_ENDSTOP_ADJUSTMENT              "Endstop adjustment"
@@ -326,12 +324,10 @@
 //
 // Endstop Names used by Endstops::report_states
 //
-#if HAS_X_AXIS
-  #define STR_X_MIN                         "x_min"
-  #define STR_X_MAX                         "x_max"
-  #define STR_X2_MIN                        "x2_min"
-  #define STR_X2_MAX                        "x2_max"
-#endif
+#define STR_X_MIN                           "x_min"
+#define STR_X_MAX                           "x_max"
+#define STR_X2_MIN                          "x2_min"
+#define STR_X2_MAX                          "x2_max"
 
 #if HAS_Y_AXIS
   #define STR_Y_MIN                         "y_min"
@@ -406,6 +402,106 @@
   #endif
 #else
   #define STR_I   ""
+#endif
+
+#if HAS_J_AXIS
+  #if AXIS5_NAME == 'B'
+    #define STR_J "B"
+    #define STR_J_MIN "b_min"
+    #define STR_J_MAX "b_max"
+  #elif AXIS5_NAME == 'C'
+    #define STR_J "C"
+    #define STR_J_MIN "c_min"
+    #define STR_J_MAX "c_max"
+  #elif AXIS5_NAME == 'U'
+    #define STR_J "U"
+    #define STR_J_MIN "u_min"
+    #define STR_J_MAX "u_max"
+  #elif AXIS5_NAME == 'V'
+    #define STR_J "V"
+    #define STR_J_MIN "v_min"
+    #define STR_J_MAX "v_max"
+  #elif AXIS5_NAME == 'W'
+    #define STR_J "W"
+    #define STR_J_MIN "w_min"
+    #define STR_J_MAX "w_max"
+  #else
+    #error "AXIS5_NAME can only be one of 'B', 'C', 'U', 'V', or 'W'."
+  #endif
+#else
+  #define STR_J   ""
+#endif
+
+#if HAS_K_AXIS
+  #if AXIS6_NAME == 'C'
+    #define STR_K "C"
+    #define STR_K_MIN "c_min"
+    #define STR_K_MAX "c_max"
+  #elif AXIS6_NAME == 'U'
+    #define STR_K "U"
+    #define STR_K_MIN "u_min"
+    #define STR_K_MAX "u_max"
+  #elif AXIS6_NAME == 'V'
+    #define STR_K "V"
+    #define STR_K_MIN "v_min"
+    #define STR_K_MAX "v_max"
+  #elif AXIS6_NAME == 'W'
+    #define STR_K "W"
+    #define STR_K_MIN "w_min"
+    #define STR_K_MAX "w_max"
+  #else
+    #error "AXIS6_NAME can only be one of 'C', 'U', 'V', or 'W'."
+  #endif
+#else
+  #define STR_K   ""
+#endif
+
+#if HAS_U_AXIS
+  #if AXIS7_NAME == 'U'
+    #define STR_U "U"
+    #define STR_U_MIN "u_min"
+    #define STR_U_MAX "u_max"
+  #elif AXIS7_NAME == 'V'
+    #define STR_U "V"
+    #define STR_U_MIN "v_min"
+    #define STR_U_MAX "v_max"
+  #elif AXIS7_NAME == 'W'
+    #define STR_U "W"
+    #define STR_U_MIN "w_min"
+    #define STR_U_MAX "w_max"
+  #else
+    #error "AXIS7_NAME can only be one of 'U', 'V', or 'W'."
+  #endif
+#else
+  #define STR_U   ""
+#endif
+
+#if HAS_V_AXIS
+  #if AXIS8_NAME == 'V'
+    #define STR_V "V"
+    #define STR_V_MIN "v_min"
+    #define STR_V_MAX "v_max"
+  #elif AXIS8_NAME == 'W'
+    #define STR_V "W"
+    #define STR_V_MIN "w_min"
+    #define STR_V_MAX "w_max"
+  #else
+    #error "AXIS8_NAME can only be one of 'V', or 'W'."
+  #endif
+#else
+  #define STR_V   ""
+#endif
+
+#if HAS_W_AXIS
+  #if AXIS9_NAME == 'W'
+    #define STR_W "W"
+    #define STR_W_MIN "w_min"
+    #define STR_W_MAX "w_max"
+  #else
+    #error "AXIS9_NAME can only be 'W'."
+  #endif
+#else
+  #define STR_W   ""
 #endif
 
 #if HAS_J_AXIS

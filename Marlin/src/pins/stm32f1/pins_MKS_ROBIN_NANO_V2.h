@@ -242,7 +242,7 @@
 #endif
 
 #if SD_CONNECTION_IS(ONBOARD)
-  #define ONBOARD_SDIO
+  #define SDIO_SUPPORT
   #define SDIO_CLOCK                     4500000  // 4.5 MHz
   #define SD_DETECT_PIN                     PD12
   #define ONBOARD_SD_CS_PIN                 PC11
@@ -311,7 +311,7 @@
 #if HAS_WIRED_LCD && !HAS_SPI_TFT
   #define BEEPER_PIN                        PC5
   #define BTN_ENC                           PE13
-  #define LCD_PINS_EN                       PD13
+  #define LCD_PINS_ENABLE                   PD13
   #define LCD_PINS_RS                       PC6
   #define BTN_EN1                           PE8
   #define BTN_EN2                           PE11
@@ -384,9 +384,9 @@
 #if ENABLED(SPI_FLASH)
   #define SPI_FLASH_SIZE               0x1000000  // 16MB
   #define SPI_FLASH_CS_PIN                  PB12
-  #define SPI_FLASH_SCK_PIN                 PB13
-  #define SPI_FLASH_MISO_PIN                PB14
   #define SPI_FLASH_MOSI_PIN                PB15
+  #define SPI_FLASH_MISO_PIN                PB14
+  #define SPI_FLASH_SCK_PIN                 PB13
 #endif
 
 #ifndef BEEPER_PIN

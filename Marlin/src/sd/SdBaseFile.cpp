@@ -771,7 +771,7 @@ bool SdBaseFile::open(SdBaseFile * const dirFile, const uint8_t dname[11]
       if (!dirFile->seekSet(32 * index)) return false;
 
       // Dir entries write loop: [LFN] + SFN(1)
-      for (uint8_t dirWriteIdx = 0; dirWriteIdx < reqEntriesNum; ++dirWriteIdx) {
+      LOOP_L_N(dirWriteIdx, reqEntriesNum) {
         index = (dirFile->curPosition_ / 32) & 0xF;
         p = dirFile->readDirCache();
         // LFN or SFN Entry?
@@ -1002,8 +1002,7 @@ bool SdBaseFile::openNext(SdBaseFile *dirFile, const uint8_t oflag) {
   bool SdBaseFile::isDirLFN(const dir_t* dir) {
     if (DIR_IS_LONG_NAME(dir)) {
       vfat_t *VFAT = (vfat_t*)dir;
-      // Sanity-check the VFAT entry. The first cluster is always set to zero.
-      // The sequence number should be higher than 0 and lower than maximum allowed by VFAT spec
+      // Sanity-check the VFAT entry. The first cluster is always set to zero. And the sequence number should be higher than 0
       if ((VFAT->firstClusterLow == 0) && WITHIN((VFAT->sequenceNumber & 0x1F), 1, MAX_VFAT_ENTRIES)) return true;
     }
     return false;
@@ -1137,7 +1136,7 @@ bool SdBaseFile::openNext(SdBaseFile *dirFile, const uint8_t oflag) {
    */
   void SdBaseFile::getLFNName(vfat_t *pFatDir, char *lname, const uint8_t sequenceNumber) {
     const uint8_t startOffset = (sequenceNumber - 1) * FILENAME_LENGTH;
-    for (uint8_t i = 0; i < FILENAME_LENGTH; ++i) {
+    LOOP_L_N(i, FILENAME_LENGTH) {
       const uint16_t utf16_ch = (i >= 11) ? pFatDir->name3[i - 11] : (i >= 5) ? pFatDir->name2[i - 5] : pFatDir->name1[i];
       #if ENABLED(UTF_FILENAME_SUPPORT)
         // We can't reconvert to UTF-8 here as UTF-8 is variable-size encoding, but joining LFN blocks
@@ -1158,7 +1157,7 @@ bool SdBaseFile::openNext(SdBaseFile *dirFile, const uint8_t oflag) {
   void SdBaseFile::setLFNName(vfat_t *pFatDir, char *lname, const uint8_t sequenceNumber) {
     const uint8_t startOffset = (sequenceNumber - 1) * FILENAME_LENGTH,
                   nameLength = strlen(lname);
-    for (uint8_t i = 0; i < FILENAME_LENGTH; ++i) {
+    LOOP_L_N(i, FILENAME_LENGTH) {
       uint16_t ch = 0;
       if ((startOffset + i) < nameLength)
         ch = lname[startOffset + i];
@@ -1463,7 +1462,7 @@ int8_t SdBaseFile::readDir(dir_t * const dir, char * const longFilename) {
         // Sanity-check the VFAT entry. The first cluster is always set to zero. And the sequence number should be higher than 0
         if (VFAT->firstClusterLow == 0) {
           const uint8_t seq = VFAT->sequenceNumber & 0x1F;
-          if (WITHIN(seq, 1, VFAT_ENTRIES_LIMIT)) {
+          if (WITHIN(seq, 1, MAX_VFAT_ENTRIES)) {
             if (seq == 1) {
               checksum = VFAT->checksum;
               checksum_error = 0;
@@ -1479,7 +1478,7 @@ int8_t SdBaseFile::readDir(dir_t * const dir, char * const longFilename) {
 
               n = (seq - 1) * (FILENAME_LENGTH);
 
-              for (uint8_t i = 0; i < FILENAME_LENGTH; ++i) {
+              LOOP_L_N(i, FILENAME_LENGTH) {
                 const uint16_t utf16_ch = (i >= 11) ? VFAT->name3[i - 11] : (i >= 5) ? VFAT->name2[i - 5] : VFAT->name1[i];
                 #if ENABLED(UTF_FILENAME_SUPPORT)
                   // We can't reconvert to UTF-8 here as UTF-8 is variable-size encoding, but joining LFN blocks
@@ -1627,7 +1626,7 @@ bool SdBaseFile::remove() {
     // Check if the entry has a LFN
     bool lastEntry = false;
     // loop back to search for any LFN entries related to this file
-    for (uint8_t sequenceNumber = 1; sequenceNumber <= VFAT_ENTRIES_LIMIT; ++sequenceNumber) {
+    LOOP_S_LE_N(sequenceNumber, 1, MAX_VFAT_ENTRIES) {
       dirIndex_ = (dirIndex_ - 1) & 0xF;
       if (dirBlock_ == 0) break;
       if (dirIndex_ == 0xF) dirBlock_--;

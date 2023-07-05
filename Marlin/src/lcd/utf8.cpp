@@ -21,8 +21,8 @@
  */
 
 /**
- * @file    utf8.cpp
- * @brief   Helper functions for UTF-8 strings
+ * @file    fontutils.cpp
+ * @brief   help functions for font and char
  * @author  Yunhui Fu (yhfudev@gmail.com)
  * @version 1.0
  * @date    2016-08-19
@@ -30,10 +30,6 @@
  */
 
 #include "../inc/MarlinConfigPre.h"
-
-#if HAS_UTF8_UTILS
-
-#include "../inc/MarlinConfig.h"
 
 #if HAS_WIRED_LCD
   #include "marlinui.h"

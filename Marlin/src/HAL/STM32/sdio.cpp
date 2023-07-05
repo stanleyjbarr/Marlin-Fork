@@ -30,6 +30,8 @@
 
 #include "sdio.h"
 
+#include "sdio.h"
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -453,5 +455,5 @@ uint32_t SDIO_GetCardSize() {
   return (uint32_t)(hsd.SdCard.BlockNbr) * (hsd.SdCard.BlockSize);
 }
 
-#endif // ONBOARD_SDIO
+#endif // SDIO_SUPPORT
 #endif // HAL_STM32

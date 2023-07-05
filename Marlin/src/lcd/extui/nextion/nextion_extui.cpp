@@ -35,9 +35,9 @@
 
 namespace ExtUI {
 
-  void onStartup() { nextion.startup();  }
-  void onIdle() { nextion.idleLoop(); }
-  void onPrinterKilled(FSTR_P const error, FSTR_P const component) { nextion.printerKilled(error, component); }
+  void onStartup() { nextion.Startup();  }
+  void onIdle() { nextion.IdleLoop(); }
+  void onPrinterKilled(FSTR_P const error, FSTR_P const component) { nextion.PrinterKilled(error, component); }
   void onMediaInserted() {}
   void onMediaError() {}
   void onMediaRemoved() {}
@@ -46,8 +46,8 @@ namespace ExtUI {
   void onPrintTimerPaused() {}
   void onPrintTimerStopped() {}
   void onFilamentRunout(const extruder_t) {}
-  void onUserConfirmRequired(const char * const msg) { nextion.confirmationRequest(msg); }
-  void onStatusChanged(const char * const msg) { nextion.statusChange(msg); }
+  void onUserConfirmRequired(const char * const msg) { nextion.ConfirmationRequest(msg); }
+  void onStatusChanged(const char * const msg) { nextion.StatusChange(msg); }
 
   void onHomingStart() {}
   void onHomingDone() {}
@@ -79,20 +79,19 @@ namespace ExtUI {
     // Called after loading or resetting stored settings
   }
 
-  void onSettingsStored(const bool success) {
+  void onSettingsStored(bool success) {
     // Called after the entire EEPROM has been written,
     // whether successful or not.
   }
 
-  void onSettingsLoaded(const bool success) {
+  void onSettingsLoaded(bool success) {
     // Called after the entire EEPROM has been read,
     // whether successful or not.
   }
 
-  #if HAS_LEVELING
+  #if HAS_MESH
     void onLevelingStart() {}
     void onLevelingDone() {}
-  #endif
 
   #if HAS_MESH
     void onMeshUpdate(const int8_t xpos, const int8_t ypos, const float zval) {

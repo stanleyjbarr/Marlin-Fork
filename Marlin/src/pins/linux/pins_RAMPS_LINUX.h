@@ -136,7 +136,7 @@
 #define TEMP_BED_PIN                           2  // Analog Input
 
 // SPI for MAX Thermocouple
-#if !HAS_MEDIA
+#if DISABLED(SDSUPPORT)
   #define TEMP_0_CS_PIN                       66  // Don't use 53 if using Display/SD card
 #else
   #define TEMP_0_CS_PIN                       66  // Don't use 49 (SD_DETECT_PIN)
@@ -161,21 +161,21 @@
 #define HEATER_0_PIN                MOSFET_A_PIN
 
 #if FET_ORDER_EFB                                 // Hotend, Fan, Bed
-  #define FAN0_PIN                  MOSFET_B_PIN
+  #define FAN_PIN                   MOSFET_B_PIN
   #define HEATER_BED_PIN            MOSFET_C_PIN
 #elif FET_ORDER_EEF                               // Hotend, Hotend, Fan
   #define HEATER_1_PIN              MOSFET_B_PIN
-  #define FAN0_PIN                  MOSFET_C_PIN
+  #define FAN_PIN                   MOSFET_C_PIN
 #elif FET_ORDER_EEB                               // Hotend, Hotend, Bed
   #define HEATER_1_PIN              MOSFET_B_PIN
   #define HEATER_BED_PIN            MOSFET_C_PIN
 #elif FET_ORDER_EFF                               // Hotend, Fan, Fan
-  #define FAN0_PIN                  MOSFET_B_PIN
+  #define FAN_PIN                   MOSFET_B_PIN
   #define FAN1_PIN                  MOSFET_C_PIN
 #elif FET_ORDER_SF                                // Spindle, Fan
-  #define FAN0_PIN                  MOSFET_C_PIN
+  #define FAN_PIN                   MOSFET_C_PIN
 #else                                             // Non-specific are "EFB" (i.e., "EFBF" or "EFBE")
-  #define FAN0_PIN                  MOSFET_B_PIN
+  #define FAN_PIN                   MOSFET_B_PIN
   #define HEATER_BED_PIN            MOSFET_C_PIN
   #if HOTENDS == 1 && DISABLED(HEATERS_PARALLEL)
     #define FAN1_PIN                MOSFET_D_PIN
@@ -381,8 +381,8 @@
   #define TFT_CS_PIN                          49
   #define TFT_DC_PIN                          43
   #define TFT_SCK_PIN                 SD_SCK_PIN
-  #define TFT_MISO_PIN               SD_MISO_PIN
   #define TFT_MOSI_PIN               SD_MOSI_PIN
+  #define TFT_MISO_PIN               SD_MISO_PIN
   #define LCD_USE_DMA_SPI
 
   #define BTN_EN1                             40
@@ -396,19 +396,19 @@
 
   #define SPI_FLASH
   #if ENABLED(SPI_FLASH)
-    #define SPI_DEVICE                         1  // Maple
+    #define SPI_DEVICE                         1
     #define SPI_FLASH_SIZE             0x1000000  // 16MB
     #define SPI_FLASH_CS_PIN                  31
-    #define SPI_FLASH_SCK_PIN         SD_SCK_PIN
-    #define SPI_FLASH_MISO_PIN       SD_MISO_PIN
     #define SPI_FLASH_MOSI_PIN       SD_MOSI_PIN
+    #define SPI_FLASH_MISO_PIN       SD_MISO_PIN
+    #define SPI_FLASH_SCK_PIN         SD_SCK_PIN
   #endif
 
   #define TFT_BUFFER_SIZE                 0xFFFF
   #ifndef TFT_DRIVER
     #define TFT_DRIVER                    ST7796
   #endif
-  #if DISABLED(TOUCH_SCREEN_CALIBRATION)
+  #ifndef TOUCH_SCREEN_CALIBRATION
     #if ENABLED(TFT_RES_320x240)
       #ifndef TOUCH_CALIBRATION_X
         #define TOUCH_CALIBRATION_X        20525
@@ -593,7 +593,7 @@
       #define LCD_SDSS                      SDSS
       #define SD_DETECT_PIN                   49
 
-    #elif ANY(VIKI2, miniVIKI)
+    #elif EITHER(VIKI2, miniVIKI)
 
       #define DOGLCD_CS                       45
       #define DOGLCD_A0                       44

@@ -75,12 +75,24 @@ GcodeSuite gcode;
 millis_t GcodeSuite::previous_move_ms = 0,
          GcodeSuite::max_inactive_time = 0;
 
-#if HAS_DISABLE_IDLE_AXES
-  millis_t GcodeSuite::stepper_inactive_time = SEC_TO_MS(DEFAULT_STEPPER_TIMEOUT_SEC);
+#if HAS_DISABLE_INACTIVE_AXIS
+  millis_t GcodeSuite::stepper_inactive_time = SEC_TO_MS(DEFAULT_STEPPER_DEACTIVE_TIME);
 #endif
 
 // Relative motion mode for each logical axis
-relative_t GcodeSuite::axis_relative; // Init in constructor
+static constexpr xyze_bool_t ar_init = AXIS_RELATIVE_MODES;
+axis_bits_t GcodeSuite::axis_relative = 0 LOGICAL_AXIS_GANG(
+  | (ar_init.e << REL_E),
+  | (ar_init.x << REL_X),
+  | (ar_init.y << REL_Y),
+  | (ar_init.z << REL_Z),
+  | (ar_init.i << REL_I),
+  | (ar_init.j << REL_J),
+  | (ar_init.k << REL_K),
+  | (ar_init.u << REL_U),
+  | (ar_init.v << REL_V),
+  | (ar_init.w << REL_W)
+);
 
 #if ANY(HAS_AUTO_REPORTING, HOST_KEEPALIVE_FEATURE)
   bool GcodeSuite::autoreport_paused; // = false
@@ -105,7 +117,8 @@ void GcodeSuite::report_heading(const bool forReplay, FSTR_P const fstr, const b
   if (forReplay) return;
   if (fstr) {
     SERIAL_ECHO_START();
-    SERIAL_ECHO(F("; "), fstr);
+    SERIAL_ECHOPGM("; ");
+    SERIAL_ECHOF(fstr);
   }
   if (eol) { SERIAL_CHAR(':'); SERIAL_EOL(); }
 }
@@ -203,7 +216,7 @@ void GcodeSuite::get_destination_from_command() {
     TERN_(LASER_FEATURE, cutter.feedrate_mm_m = MMS_TO_MMM(feedrate_mm_s));
   }
 
-  #if ALL(PRINTCOUNTER, HAS_EXTRUDERS)
+  #if BOTH(PRINTCOUNTER, HAS_EXTRUDERS)
     if (!DEBUGGING(DRYRUN) && !skip_move)
       print_job_timer.incFilamentUsed(destination.e - current_position.e);
   #endif
@@ -441,7 +454,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 61: G61(); break;                                    // G61:  Apply/restore saved coordinates.
       #endif
 
-      #if ALL(PTC_PROBE, PTC_BED)
+      #if BOTH(PTC_PROBE, PTC_BED)
         case 76: G76(); break;                                    // G76: Calibrate first layer compensation values
       #endif
 
@@ -483,11 +496,11 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 7: M7(); break;                                      // M7: Coolant Mist ON
       #endif
 
-      #if ANY(AIR_ASSIST, COOLANT_FLOOD)
+      #if EITHER(AIR_ASSIST, COOLANT_FLOOD)
         case 8: M8(); break;                                      // M8: Air Assist / Coolant Flood ON
       #endif
 
-      #if ANY(AIR_ASSIST, COOLANT_CONTROL)
+      #if EITHER(AIR_ASSIST, COOLANT_CONTROL)
         case 9: M9(); break;                                      // M9: Air Assist / Coolant OFF
       #endif
 
@@ -568,7 +581,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 102: M102(); break;                                  // M102: Configure Bed Distance Sensor
       #endif
 
-      #if HAS_HOTEND
+      #if HAS_EXTRUDERS
         case 104: M104(); break;                                  // M104: Set hot end temperature
         case 109: M109(); break;                                  // M109: Wait for hotend temperature to reach target
       #endif
@@ -627,7 +640,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 154: M154(); break;                                  // M154: Set position auto-report interval
       #endif
 
-      #if ALL(AUTO_REPORT_TEMPERATURES, HAS_TEMP_SENSOR)
+      #if BOTH(AUTO_REPORT_TEMPERATURES, HAS_TEMP_SENSOR)
         case 155: M155(); break;                                  // M155: Set temperature auto-report interval
       #endif
 
@@ -658,7 +671,6 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 82: M82(); break;                                    // M82: Set E axis normal mode (same as other axes)
         case 83: M83(); break;                                    // M83: Set E axis relative mode
       #endif
-
       case 18: case 84: M18_M84(); break;                         // M18/M84: Disable Steppers / Set Timeout
       case 85: M85(); break;                                      // M85: Set inactivity stepper shutdown timeout
 
@@ -935,8 +947,8 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 575: M575(); break;                                  // M575: Set serial baudrate
       #endif
 
-      #if HAS_ZV_SHAPING
-        case 593: M593(); break;                                  // M593: Input Shaping control
+      #if HAS_SHAPING
+        case 593: M593(); break;                                  // M593: Set Input Shaping parameters
       #endif
 
       #if ENABLED(ADVANCED_PAUSE_FEATURE)
@@ -1059,11 +1071,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 422: M422(); break;                                  // M422: Set Z Stepper automatic alignment position using probe
       #endif
 
-      #if ENABLED(OTA_FIRMWARE_UPDATE)
-        case 936: M936(); break;                                  // M936: OTA update firmware.
-      #endif
-
-      #if SPI_FLASH_BACKUP
+      #if ALL(SPI_FLASH, SDSUPPORT, MARLIN_DEV_MODE)
         case 993: M993(); break;                                  // M993: Backup SPI Flash to SD
         case 994: M994(); break;                                  // M994: Load a Backup from SD to SPI Flash
       #endif
@@ -1173,7 +1181,10 @@ void GcodeSuite::process_subcommands_now(FSTR_P fgcode) {
   for (;;) {
     PGM_P const delim = strchr_P(pgcode, '\n');       // Get address of next newline
     const size_t len = delim ? delim - pgcode : strlen_P(pgcode); // Get the command length
-    parser.parse(MString<MAX_CMD_SIZE>().setn_P(pgcode, len));    // Parse the command
+    char cmd[len + 1];                                // Allocate a stack buffer
+    strncpy_P(cmd, pgcode, len);                      // Copy the command to the stack
+    cmd[len] = '\0';                                  // End with a nul
+    parser.parse(cmd);                                // Parse the command
     process_parsed_command(true);                     // Process it (no "ok")
     if (!delim) break;                                // Last command?
     pgcode = delim + 1;                               // Get the next command

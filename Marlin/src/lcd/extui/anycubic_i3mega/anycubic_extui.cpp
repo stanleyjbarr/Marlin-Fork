@@ -35,12 +35,12 @@
 
 namespace ExtUI {
 
-  void onStartup()        { anycubicTFT.onSetup(); }
-  void onIdle()           { anycubicTFT.onCommandScan(); }
-  void onPrinterKilled(FSTR_P const error, FSTR_P const component) { anycubicTFT.onKillTFT(); }
-  void onMediaInserted()  { anycubicTFT.onSDCardStateChange(true); }
-  void onMediaError()     { anycubicTFT.onSDCardError(); }
-  void onMediaRemoved()   { anycubicTFT.onSDCardStateChange(false); }
+  void onStartup()        { AnycubicTFT.OnSetup(); }
+  void onIdle()           { AnycubicTFT.OnCommandScan(); }
+  void onPrinterKilled(FSTR_P const error, FSTR_P const component) { AnycubicTFT.OnKillTFT(); }
+  void onMediaInserted()  { AnycubicTFT.OnSDCardStateChange(true); }
+  void onMediaError()     { AnycubicTFT.OnSDCardError(); }
+  void onMediaRemoved()   { AnycubicTFT.OnSDCardStateChange(false); }
   void onPlayTone(const uint16_t frequency, const uint16_t duration) {
     TERN_(SPEAKER, ::tone(BEEPER_PIN, frequency, duration));
   }
@@ -81,12 +81,12 @@ namespace ExtUI {
     // Called after loading or resetting stored settings
   }
 
-  void onSettingsStored(const bool success) {
+  void onSettingsStored(bool success) {
     // Called after the entire EEPROM has been written,
     // whether successful or not.
   }
 
-  void onSettingsLoaded(const bool success) {
+  void onSettingsLoaded(bool success) {
     // Called after the entire EEPROM has been read,
     // whether successful or not.
   }
@@ -97,6 +97,10 @@ namespace ExtUI {
   #endif
 
   #if HAS_MESH
+
+    void onLevelingStart() {}
+    void onLevelingDone() {}
+
     void onMeshUpdate(const int8_t xpos, const int8_t ypos, const_float_t zval) {
       // Called when any mesh points are updated
     }

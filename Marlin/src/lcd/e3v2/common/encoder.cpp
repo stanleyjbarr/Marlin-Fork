@@ -70,7 +70,7 @@ void encoderConfiguration() {
 }
 
 // Analyze encoder value and return state
-EncoderState encoderReceiveAnalyze() {
+EncoderState Encoder_ReceiveAnalyze() {
   const millis_t now = millis();
   static uint8_t lastEncoderBits;
   uint8_t newbutton = 0;
