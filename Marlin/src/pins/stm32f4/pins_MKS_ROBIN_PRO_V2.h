@@ -239,23 +239,23 @@
  *                ------                                      ------
  *                 EXP1                                        EXP2
  */
-#define EXP1_01_PIN                     PC5
-#define EXP1_02_PIN                     PE13
-#define EXP1_03_PIN                     PD13
-#define EXP1_04_PIN                     PC6
-#define EXP1_05_PIN                     PE14
-#define EXP1_06_PIN                     PE15
-#define EXP1_07_PIN                     PD11
-#define EXP1_08_PIN                     PD10
+#define EXP1_01_PIN                         PC5
+#define EXP1_02_PIN                         PE13
+#define EXP1_03_PIN                         PD13
+#define EXP1_04_PIN                         PC6
+#define EXP1_05_PIN                         PE14
+#define EXP1_06_PIN                         PE15
+#define EXP1_07_PIN                         PD11
+#define EXP1_08_PIN                         PD10
 
-#define EXP2_01_PIN                     PA6
-#define EXP2_02_PIN                     PA5
-#define EXP2_03_PIN                     PE8
-#define EXP2_04_PIN                     PE10
-#define EXP2_05_PIN                     PE11
-#define EXP2_06_PIN                     PA7
-#define EXP2_07_PIN                     PE12
-#define EXP2_08_PIN                     -1    // RESET
+#define EXP2_01_PIN                         PA6
+#define EXP2_02_PIN                         PA5
+#define EXP2_03_PIN                         PE8
+#define EXP2_04_PIN                         PE10
+#define EXP2_05_PIN                         PE11
+#define EXP2_06_PIN                         PA7
+#define EXP2_07_PIN                         PE12
+#define EXP2_08_PIN                         -1    // RESET
 
 //
 // LCD SD
@@ -272,16 +272,18 @@
 */
 
 #define SPI_FLASH
-#define SPI_FLASH
-#define SPI_DEVICE                             2
-#define SPI_FLASH_SIZE                 0x1000000
 #if ENABLED(SPI_FLASH)
+  #define SPI_DEVICE                           2  // Maple
+  #define SPI_FLASH_SIZE               0x1000000  // 16MB
   #define SPI_FLASH_CS_PIN                  PB12
-  #define SPI_FLASH_MOSI_PIN                PB15
-  #define SPI_FLASH_MISO_PIN                PB14
   #define SPI_FLASH_SCK_PIN                 PB13
+  #define SPI_FLASH_MISO_PIN                PB14
+  #define SPI_FLASH_MOSI_PIN                PB15
 #endif
 
+//
+// LCD / Controller
+//
 #if ANY(TFT_COLOR_UI, TFT_LVGL_UI, TFT_CLASSIC_UI)
   #ifndef TOUCH_CALIBRATION_X
     #define TOUCH_CALIBRATION_X           -17253
@@ -340,7 +342,7 @@
 
   #define BEEPER_PIN                 EXP1_01_PIN
   #define BTN_ENC                    EXP1_02_PIN
-  #define LCD_PINS_ENABLE            EXP1_03_PIN
+  #define LCD_PINS_EN                EXP1_03_PIN
   #define LCD_PINS_RS                EXP1_04_PIN
   #define BTN_EN1                    EXP2_03_PIN
   #define BTN_EN2                    EXP2_05_PIN

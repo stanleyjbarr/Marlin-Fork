@@ -44,6 +44,7 @@
 #include "max7219.h"
 
 #include "../module/planner.h"
+#include "../module/stepper.h"
 #include "../MarlinCore.h"
 #include "../HAL/shared/Delay.h"
 
@@ -135,9 +136,7 @@ uint8_t Max7219::suspended; // = 0;
 
 void Max7219::error(FSTR_P const func, const int32_t v1, const int32_t v2/*=-1*/) {
   #if ENABLED(MAX7219_ERRORS)
-    SERIAL_ECHOPGM("??? Max7219::");
-    SERIAL_ECHOF(func, AS_CHAR('('));
-    SERIAL_ECHO(v1);
+    SERIAL_ECHO(F("??? Max7219::"), func, AS_CHAR('('), v1);
     if (v2 > 0) SERIAL_ECHOPGM(", ", v2);
     SERIAL_CHAR(')');
     SERIAL_EOL();
@@ -338,13 +337,13 @@ void Max7219::fill() {
 
 void Max7219::clear_row(const uint8_t row) {
   if (row >= MAX7219_Y_LEDS) return error(F("clear_row"), row);
-  LOOP_L_N(x, MAX7219_X_LEDS) CLR_7219(x, row);
+  for (uint8_t x = 0; x < MAX7219_X_LEDS; ++x) CLR_7219(x, row);
   send_row(row);
 }
 
 void Max7219::clear_column(const uint8_t col) {
   if (col >= MAX7219_X_LEDS) return error(F("set_column"), col);
-  LOOP_L_N(y, MAX7219_Y_LEDS) CLR_7219(col, y);
+  for (uint8_t y = 0; y < MAX7219_Y_LEDS; ++y) CLR_7219(col, y);
   send_column(col);
 }
 
@@ -723,10 +722,23 @@ void Max7219::idle_tasks() {
     }
   #endif
 
+  #ifdef MAX7219_DEBUG_MULTISTEPPING
+    static uint8_t last_multistepping = 0;
+    const uint8_t multistepping = Stepper::steps_per_isr;
+    if (multistepping != last_multistepping) {
+      static uint8_t log2_old = 0;
+      uint8_t log2_new = 0;
+      for (uint8_t val = multistepping; val > 1; val >>= 1) log2_new++;
+      mark16(MAX7219_DEBUG_MULTISTEPPING, log2_old, log2_new, &row_change_mask);
+      last_multistepping = multistepping;
+      log2_old = log2_new;
+    }
+  #endif
+
   // batch line updates
   suspended--;
   if (!suspended)
-    LOOP_L_N(i, 8) if (row_change_mask & _BV(i))
+    for (uint8_t i = 0; i < 8; ++i) if (row_change_mask & _BV(i))
       refresh_line(i);
 
   // After resume() automatically do a refresh()

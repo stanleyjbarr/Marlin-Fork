@@ -76,7 +76,7 @@ class MenuItemBase {
 // STATIC_ITEM(LABEL,...)
 class MenuItem_static : public MenuItemBase {
   public:
-    static void draw(const uint8_t row, FSTR_P const fstr, const uint8_t style=SS_DEFAULT, const char * const vstr=nullptr);
+    static void draw(const uint8_t row, FSTR_P const fstr, const uint8_t style=SS_DEFAULT, const char *vstr=nullptr);
 };
 
 // BACK_ITEM(LABEL)
@@ -258,7 +258,7 @@ inline void clear_menu_history() { screen_history_depth = 0; }
 #define STICKY_SCREEN(S) []{ ui.defer_status_screen(); ui.goto_screen(S); }
 
 #if HAS_LEVELING && ANY(LCD_BED_TRAMMING, PROBE_OFFSET_WIZARD, X_AXIS_TWIST_COMPENSATION)
-  extern bool leveling_was_active;
+  extern bool menu_leveling_was_active;
 #endif
 
 #if ANY(PROBE_MANUALLY, MESH_BED_LEVELING, X_AXIS_TWIST_COMPENSATION)

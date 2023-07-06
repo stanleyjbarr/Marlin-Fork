@@ -59,7 +59,7 @@
 TFT_IO_DRIVER TFT_IO::io;
 uint32_t TFT_IO::lcd_id = 0xFFFFFFFF;
 
-void TFT_IO::InitTFT() {
+void TFT_IO::initTFT() {
   if (lcd_id != 0xFFFFFFFF) return;
 
   #if PIN_EXISTS(TFT_BACKLIGHT)
@@ -242,7 +242,7 @@ void TFT_IO::write_esc_sequence(const uint16_t *sequence) {
       io.writeData(data);
       continue;
     }
-    data = *Sequence++;
+    data = *sequence++;
     if (data == 0x7FFF) break;
     if (data == 0xFFFF)
       io.writeData(0xFFFF);

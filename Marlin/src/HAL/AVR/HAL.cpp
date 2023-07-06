@@ -145,7 +145,7 @@ void MarlinHAL::reboot() {
 // Free Memory Accessor
 // ------------------------
 
-#if ENABLED(SDSUPPORT)
+#if HAS_MEDIA
 
   #include "../../sd/SdFatUtil.h"
   int freeMemory() { return SdFatUtil::FreeRam(); }

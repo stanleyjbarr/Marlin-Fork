@@ -247,7 +247,7 @@ void menu_main() {
   START_MENU();
   BACK_ITEM(MSG_INFO_SCREEN);
 
-  #if ENABLED(SDSUPPORT) && !defined(MEDIA_MENU_AT_TOP) && !HAS_ENCODER_WHEEL
+  #if HAS_MEDIA && !defined(MEDIA_MENU_AT_TOP) && !HAS_ENCODER_WHEEL
     #define MEDIA_MENU_AT_TOP
   #endif
 
@@ -277,7 +277,7 @@ void menu_main() {
     #endif
   }
   else {
-    #if BOTH(SDSUPPORT, MEDIA_MENU_AT_TOP)
+    #if ALL(HAS_MEDIA, MEDIA_MENU_AT_TOP)
       // BEGIN MEDIA MENU
       #if ENABLED(MENU_ADDAUTOSTART)
         ACTION_ITEM(MSG_RUN_AUTO_FILES, card.autofile_begin); // Run Auto Files
@@ -307,9 +307,11 @@ void menu_main() {
         #if HAS_SD_DETECT
           ACTION_ITEM(MSG_NO_MEDIA, nullptr);               // "No Media"
         #else
-          GCODES_ITEM(MSG_ATTACH_MEDIA, F("M21" TERN_(MULTI_VOLUME, "S"))); // M21 Attach Media
           #if ENABLED(MULTI_VOLUME)
-            GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U"));   // M21 Attach USB Media
+            GCODES_ITEM(MSG_ATTACH_SD_MEDIA, F("M21S"));    // M21S Attach SD Card
+            GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U"));   // M21U Attach USB Media
+          #else
+            GCODES_ITEM(MSG_ATTACH_MEDIA, F("M21"));        // M21 Attach Media
           #endif
         #endif
       }
@@ -330,7 +332,7 @@ void menu_main() {
     SUBMENU(MSG_MOTION, menu_motion);
   }
 
-  #if BOTH(ADVANCED_PAUSE_FEATURE, DISABLE_ENCODER)
+  #if ALL(ADVANCED_PAUSE_FEATURE, DISABLE_ENCODER)
     FILAMENT_CHANGE_ITEM();
   #endif
 
@@ -392,7 +394,7 @@ void menu_main() {
       GCODES_ITEM(MSG_SWITCH_PS_ON, F("M80"));
   #endif
 
-  #if ENABLED(SDSUPPORT) && DISABLED(MEDIA_MENU_AT_TOP)
+  #if HAS_MEDIA && DISABLED(MEDIA_MENU_AT_TOP)
     // BEGIN MEDIA MENU
     #if ENABLED(MENU_ADDAUTOSTART)
       ACTION_ITEM(MSG_RUN_AUTO_FILES, card.autofile_begin); // Run Auto Files
@@ -422,10 +424,12 @@ void menu_main() {
       #if HAS_SD_DETECT
         ACTION_ITEM(MSG_NO_MEDIA, nullptr);               // "No Media"
       #else
-        GCODES_ITEM(MSG_ATTACH_MEDIA, F("M21" TERN_(MULTI_VOLUME, "S"))); // M21 Attach Media
-        #if ENABLED(MULTI_VOLUME)
-          GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U"));   // M21 Attach USB Media
-        #endif
+          #if ENABLED(MULTI_VOLUME)
+            GCODES_ITEM(MSG_ATTACH_SD_MEDIA, F("M21S"));    // M21S Attach SD Card
+            GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U"));   // M21U Attach USB Media
+          #else
+            GCODES_ITEM(MSG_ATTACH_MEDIA, F("M21"));        // M21 Attach Media
+          #endif
       #endif
     }
     // END MEDIA MENU

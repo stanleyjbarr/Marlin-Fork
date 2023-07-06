@@ -64,9 +64,9 @@
 // Limit Switches
 //
 #define X_MIN_PIN                           PD6
-#define X_MAX_PIN                           PG15 // To double check
+#define X_MAX_PIN                           PG15  // To double check
 #define Y_MIN_PIN                           PG9
-#define Y_MAX_PIN                           PG14 // To double check
+#define Y_MAX_PIN                           PG14  // To double check
 #define Z_MIN_PIN                           PG10
 #define Z_MAX_PIN                           PG13
 
@@ -139,15 +139,6 @@
 #if HAS_FSMC_TFT
   #define TFT_RESET_PIN                     PF15
   #define TFT_BACKLIGHT_PIN                 PF11
-
-  #define LCD_USE_DMA_FSMC                        // Use DMA transfers to send data to the TFT
-  #define FSMC_CS_PIN                       PD7   // NE4
-  #define FSMC_RS_PIN                       PG0   // A0
-  #define FSMC_DMA_DEV                      DMA2
-  #define FSMC_DMA_CHANNEL               DMA_CH5
-
-  #define TFT_CS_PIN                 FSMC_CS_PIN
-  #define TFT_RS_PIN                 FSMC_RS_PIN
 
   #define LCD_USE_DMA_FSMC                        // Use DMA transfers to send data to the TFT
   #define FSMC_CS_PIN                       PD7   // NE4

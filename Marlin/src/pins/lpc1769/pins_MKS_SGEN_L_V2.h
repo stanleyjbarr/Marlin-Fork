@@ -319,7 +319,7 @@
     #define BTN_EN1                  EXP1_03_PIN
     #define BTN_EN2                  EXP1_05_PIN
 
-    #define LCD_PINS_ENABLE          EXP1_08_PIN
+    #define LCD_PINS_EN              EXP1_08_PIN
     #define LCD_PINS_D4              EXP1_06_PIN
 
   #else
@@ -345,7 +345,7 @@
 
       #define TFT_CS_PIN             EXP1_07_PIN
       #define TFT_DC_PIN             EXP1_08_PIN
-      #define TFT_A0_PIN             TFT_DC_PIN
+      #define TFT_A0_PIN              TFT_DC_PIN
       #define TFT_MISO_PIN           EXP2_01_PIN
       #define TFT_BACKLIGHT_PIN      EXP1_03_PIN
       #define TFT_RESET_PIN          EXP1_04_PIN
@@ -372,7 +372,7 @@
 
       #define LCD_PINS_RS            EXP1_04_PIN
 
-      #define LCD_PINS_ENABLE        EXP1_03_PIN
+      #define LCD_PINS_EN            EXP1_03_PIN
       #define LCD_PINS_D4            EXP1_05_PIN
 
       #if ENABLED(FYSETC_MINI_12864)

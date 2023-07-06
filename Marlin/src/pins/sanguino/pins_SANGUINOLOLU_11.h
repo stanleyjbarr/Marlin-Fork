@@ -100,8 +100,8 @@
 //
 #define HEATER_0_PIN                          13  // (extruder)
 
-#ifndef FAN_PIN
-  #define FAN_PIN                              4  // Works for Panelolu2 too
+#ifndef FAN0_PIN
+  #define FAN0_PIN                             4  // Works for Panelolu2 too
 #endif
 
 #if DISABLED(SANGUINOLOLU_V_1_2)
@@ -133,7 +133,7 @@
   #define LCD_BACKLIGHT_PIN                   17  // LCD backlight LED
 #endif
 
-#if !HAS_CUTTER && ENABLED(SANGUINOLOLU_V_1_2) && !BOTH(HAS_WIRED_LCD, IS_NEWPANEL) // try to use IO Header
+#if !HAS_CUTTER && ENABLED(SANGUINOLOLU_V_1_2) && !ALL(HAS_WIRED_LCD, IS_NEWPANEL) // try to use IO Header
   #define CASE_LIGHT_PIN                       4  // Hardware PWM  - see if IO Header is available
 #endif
 
@@ -163,7 +163,7 @@
       #define KILL_PIN                        10
       #define BEEPER_PIN                      27
 
-    #elif IS_U8GLIB_ST7920                  // SPI GLCD 12864 ST7920 ( like [www.digole.com] ) For Melzi V2.0
+    #elif IS_U8GLIB_ST7920                        // SPI GLCD 12864 ST7920 ( like [www.digole.com] ) For Melzi V2.0
 
       #if IS_MELZI
         #define LCD_PINS_RS                   30  // CS chip select /SS chip slave select
@@ -270,7 +270,7 @@
 // M3/M4/M5 - Spindle/Laser Control
 //
 #if HAS_CUTTER
-  #if !MB(AZTEEG_X1) && ENABLED(SANGUINOLOLU_V_1_2) && !BOTH(HAS_WIRED_LCD, IS_NEWPANEL) // try to use IO Header
+  #if !MB(AZTEEG_X1) && ENABLED(SANGUINOLOLU_V_1_2) && !ALL(HAS_WIRED_LCD, IS_NEWPANEL) // try to use IO Header
 
     #define SPINDLE_LASER_PWM_PIN              4  // Hardware PWM
     #define SPINDLE_LASER_ENA_PIN             10  // Pullup or pulldown!

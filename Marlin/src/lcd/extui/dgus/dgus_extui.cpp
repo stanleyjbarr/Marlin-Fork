@@ -43,9 +43,9 @@ namespace ExtUI {
   void onIdle() { screen.loop(); }
 
   void onPrinterKilled(FSTR_P const error, FSTR_P const) {
-    ScreenHandler.sendinfoscreen(GET_TEXT_F(MSG_HALTED), error, FPSTR(NUL_STR), GET_TEXT_F(MSG_PLEASE_RESET), true, true, true, true);
-    ScreenHandler.GotoScreen(DGUSLCD_SCREEN_KILL);
-    while (!ScreenHandler.loop());  // Wait while anything is left to be sent
+    screen.sendInfoScreen(GET_TEXT_F(MSG_HALTED), error, FPSTR(NUL_STR), GET_TEXT_F(MSG_PLEASE_RESET), true, true, true, true);
+    screen.gotoScreen(DGUS_SCREEN_KILL);
+    while (!screen.loop());  // Wait while anything is left to be sent
   }
 
   void onMediaInserted() { TERN_(HAS_MEDIA, screen.sdCardInserted()); }
@@ -60,13 +60,13 @@ namespace ExtUI {
 
   void onUserConfirmRequired(const char * const msg) {
     if (msg) {
-      ScreenHandler.sendinfoscreen(F("Please confirm."), nullptr, msg, nullptr, true, true, false, true);
-      ScreenHandler.SetupConfirmAction(setUserConfirmed);
-      ScreenHandler.GotoScreen(DGUSLCD_SCREEN_POPUP);
+      screen.sendInfoScreen(F("Please confirm."), nullptr, msg, nullptr, true, true, false, true);
+      screen.setupConfirmAction(setUserConfirmed);
+      screen.gotoScreen(DGUS_SCREEN_POPUP);
     }
-    else if (ScreenHandler.getCurrentScreen() == DGUSLCD_SCREEN_POPUP) {
-      ScreenHandler.SetupConfirmAction(nullptr);
-      ScreenHandler.PopToOldScreen();
+    else if (screen.getCurrentScreen() == DGUS_SCREEN_POPUP) {
+      screen.setupConfirmAction(nullptr);
+      screen.popToOldScreen();
     }
   }
 
@@ -102,19 +102,20 @@ namespace ExtUI {
     // Called after loading or resetting stored settings
   }
 
-  void onSettingsStored(bool success) {
+  void onSettingsStored(const bool success) {
     // Called after the entire EEPROM has been written,
     // whether successful or not.
   }
 
-  void onSettingsLoaded(bool success) {
+  void onSettingsLoaded(const bool success) {
     // Called after the entire EEPROM has been read,
     // whether successful or not.
   }
 
-  #if HAS_MESH
+  #if HAS_LEVELING
     void onLevelingStart() {}
     void onLevelingDone() {}
+  #endif
 
   #if HAS_MESH
     void onMeshUpdate(const int8_t xpos, const int8_t ypos, const_float_t zval) {
@@ -144,10 +145,10 @@ namespace ExtUI {
       // Called for temperature PID tuning result
       switch (rst) {
         case PID_STARTED:
-          ScreenHandler.setstatusmessagePGM(GET_TEXT(MSG_PID_AUTOTUNE));
+          screen.setStatusMessage(GET_TEXT_F(MSG_PID_AUTOTUNE));
           break;
-        case PID_BAD_EXTRUDER_NUM:
-          ScreenHandler.setstatusmessagePGM(GET_TEXT(MSG_PID_BAD_EXTRUDER_NUM));
+        case PID_BAD_HEATER_ID:
+          screen.setStatusMessage(GET_TEXT_F(MSG_PID_BAD_HEATER_ID));
           break;
         case PID_TEMP_TOO_HIGH:
           screen.setStatusMessage(GET_TEXT_F(MSG_PID_TEMP_TOO_HIGH));
