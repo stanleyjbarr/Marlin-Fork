@@ -593,7 +593,7 @@ void ST7920_Lite_Status_Screen::draw_status_message() {
           write_byte(' ');
           if (--chars) {                            // Draw a third space if there's room
             write_byte(' ');
-            if (--chars) write_str(str, chars);     // Print a second copy of the message
+            if (--chars) write_str(ui.status_message, chars);  // Print a second copy of the message
           }
         }
       }
@@ -702,7 +702,7 @@ bool ST7920_Lite_Status_Screen::indicators_changed() {
     void ST7920_Lite_Status_Screen::drawRemain() {
       const duration_t remaint = TERN0(SET_REMAINING_TIME, ui.get_remaining_time());
       if (printJobOngoing() && remaint.value) {
-        draw_progress_string( PPOS, prepare_time_string(remaint, 'R'));
+        draw_progress_string(PPOS, prepare_time_string(remaint, 'R'));
       }
     }
   #endif
@@ -711,7 +711,7 @@ bool ST7920_Lite_Status_Screen::indicators_changed() {
     void ST7920_Lite_Status_Screen::drawInter() {
       const duration_t interactt = ui.interaction_time;
       if (printingIsActive() && interactt.value) {
-        draw_progress_string( PPOS, prepare_time_string(interactt, 'C'));
+        draw_progress_string(PPOS, prepare_time_string(interactt, 'C'));
       }
     }
   #endif
@@ -720,7 +720,7 @@ bool ST7920_Lite_Status_Screen::indicators_changed() {
     void ST7920_Lite_Status_Screen::drawElapsed() {
       if (printJobOngoing()) {
         const duration_t elapsedt = print_job_timer.duration();
-        draw_progress_string( PPOS, prepare_time_string(elapsedt, 'E'));
+        draw_progress_string(PPOS, prepare_time_string(elapsedt, 'E'));
       }
     }
   #endif
@@ -752,10 +752,10 @@ bool ST7920_Lite_Status_Screen::indicators_changed() {
     // This drawing is a mess and only produce readable result around 25% steps
     // i.e. 74-76% look fine [||||||||||||||||||||||||        ], but 73% look like this: [||||||||||||||||       |        ]
     // meaning partially filled bytes produce only single vertical line, and i bet they're not supposed to!
-    LOOP_S_LE_N(y, top, bottom) {
+    for (uint8_t y = top; y <= bottom; ++y) {
       set_gdram_address(left, y);
       begin_data();
-      LOOP_L_N(x, width) {
+      for (uint8_t x = 0; x < width; ++x) {
         uint16_t gfx_word = 0x0000;
         if ((x + 1) * char_pcnt <= value)
           gfx_word = 0xFFFF;                                              // Draw completely filled bytes

@@ -67,6 +67,21 @@ public:
   static void add_steps(const AxisEnum axis, const int16_t distance);
   static void add_mm(const AxisEnum axis, const_float_t mm);
 
+  #if ENABLED(EP_BABYSTEPPING)
+    // Step Z for M293 / M294
+    static void z_up();
+    static void z_down();
+    #if ENABLED(EMERGENCY_PARSER)
+      // Step Z according to steps accumulated by the EP
+      FORCE_INLINE static void do_ep_steps() {
+        if (ep_babysteps) {
+          if (ep_babysteps > 0) { z_up();   ep_babysteps--; }
+          else                  { z_down(); ep_babysteps++; }
+        }
+      }
+    #endif
+  #endif // EP_BABYSTEPPING
+
   #if ENABLED(BD_SENSOR)
     static void set_mm(const AxisEnum axis, const_float_t mm);
   #endif
@@ -80,7 +95,7 @@ public:
   // apply accumulated babysteps to the axes.
   //
   static void task() {
-    LOOP_LE_N(i, BS_AXIS_IND(Z_AXIS)) step_axis(BS_AXIS(i));
+    for (uint8_t i = 0; i <= BS_AXIS_IND(Z_AXIS); ++i) step_axis(BS_AXIS(i));
   }
 
 private:

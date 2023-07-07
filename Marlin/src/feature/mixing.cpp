@@ -60,10 +60,7 @@ void Mixer::normalize(const uint8_t tool_index) {
   }
   #ifdef MIXER_NORMALIZER_DEBUG
     SERIAL_ECHOPGM("Mixer: Old relation : [ ");
-    MIXER_STEPPER_LOOP(i) {
-      SERIAL_DECIMAL(collector[i] / csum);
-      SERIAL_CHAR(' ');
-    }
+    MIXER_STEPPER_LOOP(i) SERIAL_ECHO(collector[i] / csum, AS_CHAR(' '));
     SERIAL_ECHOLNPGM("]");
   #endif
 
@@ -134,7 +131,7 @@ void Mixer::init() {
       color[MIXER_AUTORETRACT_TOOL][i] = COLOR_A_MASK;
   #endif
 
-  #if EITHER(HAS_DUAL_MIXING, GRADIENT_MIX)
+  #if ANY(HAS_DUAL_MIXING, GRADIENT_MIX)
     update_mix_from_vtool();
   #endif
 

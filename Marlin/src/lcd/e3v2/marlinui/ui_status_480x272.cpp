@@ -29,7 +29,7 @@
 #include "dwin_string.h"
 #include "lcdprint_dwin.h"
 
-#include "../../fontutils.h"
+#include "../../utf8.h"
 #include "../../../libs/numtostr.h"
 #include "../../marlinui.h"
 
@@ -39,7 +39,7 @@
 #include "../../../module/printcounter.h"
 #include "../../../module/planner.h"
 
-#if ENABLED(SDSUPPORT)
+#if HAS_MEDIA
   #include "../../../libs/duration_t.h"
 #endif
 
@@ -151,14 +151,14 @@ void _draw_axis_value(const AxisEnum axis, const char *value, const bool blink, 
     const uint16_t fanx = (4 * STATUS_CHR_WIDTH - STATUS_FAN_WIDTH) / 2;
     const bool fan_on = !!thermalManager.scaledFanSpeed(0);
     if (fan_on) {
-      DWIN_ICON_Animation(0, fan_on, ICON, ICON_Fan0, ICON_Fan3, x + fanx, y, 25);
+      dwinIconAnimation(0, fan_on, ICON, ICON_Fan0, ICON_Fan3, x + fanx, y, 25);
       dwin_string.set(i8tostr3rj(thermalManager.scaledFanSpeedPercent(0)));
       dwin_string.add('%');
       dwinDrawString(true, font14x28, COLOR_WHITE, COLOR_BG_BLACK, x, y + STATUS_FAN_HEIGHT, S(dwin_string.string()));
     }
     else {
-      DWIN_ICON_AnimationControl(0x0000); // disable all icon animations (this is the only one)
-      DWIN_ICON_Show(ICON, ICON_Fan0, x + fanx, y);
+      dwinIconAnimationControl(0x0000); // disable all icon animations (this is the only one)
+      dwinIconShow(ICON, ICON_Fan0, x + fanx, y);
       dwin_string.set(F("    "));
       dwinDrawString(true, font14x28, COLOR_WHITE, COLOR_BG_BLACK, x, y + STATUS_FAN_HEIGHT, S(dwin_string.string()));
     }
@@ -192,7 +192,7 @@ FORCE_INLINE void _draw_heater_status(const heater_id_t heater, const uint16_t x
   #endif
 
   celsius_float_t tc = 0, tt = 0;
-  bool isBed = (DISABLED(HAS_HOTEND) && ENABLED(HAS_HEATED_BED)) || (BOTH(HAS_HOTEND, HAS_HEATED_BED) && heater < 0),
+  bool isBed = (DISABLED(HAS_HOTEND) && ENABLED(HAS_HEATED_BED)) || (ALL(HAS_HOTEND, HAS_HEATED_BED) && heater < 0),
        ta = false, c_draw, t_draw, i_draw;
   c_draw = t_draw = i_draw = !ui.did_first_redraw;
   if (isBed) {
@@ -236,7 +236,7 @@ FORCE_INLINE void _draw_heater_status(const heater_id_t heater, const uint16_t x
   // Draw heater icon with on / off / leveled states
   if (i_draw) {
     const uint8_t ico = isBed ? (TERN0(HAS_LEVELING, planner.leveling_active) ? ICON_BedLevelOff : ICON_BedOff) : ICON_HotendOff;
-    DWIN_ICON_Show(ICON, ico + ta, x, y + STATUS_CHR_HEIGHT + 2);
+    dwinIconShow(ICON, ico + ta, x, y + STATUS_CHR_HEIGHT + 2);
   }
 
   // Draw current temperature, if needed
@@ -272,7 +272,7 @@ void MarlinUI::draw_status_screen() {
     // Logo/Status Icon
     #define STATUS_LOGO_WIDTH  128
     #define STATUS_LOGO_HEIGHT  40
-    DWIN_ICON_Show(ICON, ICON_LOGO_Marlin,
+    dwinIconShow(ICON, ICON_LOGO_Marlin,
       #if ENABLED(DWIN_MARLINUI_PORTRAIT)
         (LCD_PIXEL_WIDTH - (STATUS_LOGO_WIDTH)) / 2, ((STATUS_HEATERS_Y - 4) - (STATUS_LOGO_HEIGHT)) / 2
       #else
@@ -308,14 +308,14 @@ void MarlinUI::draw_status_screen() {
 
   // Axis values
   const xyz_pos_t lpos = current_position.asLogical();
-  const bool show_e_total = TERN0(LCD_SHOW_E_TOTAL, printingIsActive()); UNUSED(show_e_total);
+  const bool show_e_total = TERN1(HAS_X_AXIS, TERN0(LCD_SHOW_E_TOTAL, printingIsActive()));
 
   constexpr int16_t cpy = TERN(DWIN_MARLINUI_PORTRAIT, 195, 117);
   if (show_e_total) {
     TERN_(LCD_SHOW_E_TOTAL, _draw_e_value(e_move_accumulator, TERN(DWIN_MARLINUI_PORTRAIT, 6, 75), cpy));
   }
   else {
-                      _draw_axis_value(X_AXIS, ftostr4sign(lpos.x), blink, TERN(DWIN_MARLINUI_PORTRAIT,  6,  75), cpy);
+    TERN_(HAS_X_AXIS, _draw_axis_value(X_AXIS, ftostr4sign(lpos.x), blink, TERN(DWIN_MARLINUI_PORTRAIT,  6,  75), cpy));
     TERN_(HAS_Y_AXIS, _draw_axis_value(Y_AXIS, ftostr4sign(lpos.y), blink, TERN(DWIN_MARLINUI_PORTRAIT, 95, 184), cpy));
   }
   TERN_(HAS_Z_AXIS, _draw_axis_value(Z_AXIS, ftostr52sp(lpos.z), blink, TERN(DWIN_MARLINUI_PORTRAIT, 165, 300), cpy));

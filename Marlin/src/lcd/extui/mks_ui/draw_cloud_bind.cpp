@@ -22,8 +22,6 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
-#include "../../../inc/MarlinConfigPre.h"
-
 #if ALL(HAS_TFT_LVGL_UI, MKS_WIFI_MODULE)
 
 #include "lv_conf.h"

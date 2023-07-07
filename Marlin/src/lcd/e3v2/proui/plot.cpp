@@ -23,39 +23,22 @@
 /**
  * DWIN Single var plot
  * Author: Miguel A. Risco-Castillo
- * Version: 2.1.2
- * Date: 2022/11/20
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * For commercial applications additional licenses can be requested
+ * Version: 2.2.3
+ * Date: 2023/01/29
  */
 
-#include "../../../inc/MarlinConfigPre.h"
+#include "../../../inc/MarlinConfig.h"
 
 #if ALL(DWIN_LCD_PROUI, PROUI_TUNING_GRAPH)
 
-#include "plot.h"
+#include "dwin.h"
 #include "../../../core/types.h"
 #include "../../marlinui.h"
-#include "dwin_lcd.h"
-#include "dwinui.h"
-#include "dwin.h"
+#include "plot.h"
 
 #define Plot_Bg_Color RGB( 1, 12,  8)
 
-PlotClass Plot;
+PlotClass plot;
 
 uint16_t grphpoints, r, x2, y2 = 0;
 frame_rect_t grphframe = {0};
@@ -76,7 +59,7 @@ void PlotClass::draw(const frame_rect_t &frame, const_float_t max, const_float_t
 
 void PlotClass::update(const_float_t value) {
   if (!scale) return;
-  uint16_t y = round((y2) - value * scale);
+  const uint16_t y = round((y2) - value * scale);
   if (grphpoints < grphframe.w) {
     dwinDrawPoint(COLOR_YELLOW, 1, 1, grphpoints + grphframe.x, y);
   }

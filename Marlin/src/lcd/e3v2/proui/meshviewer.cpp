@@ -23,24 +23,22 @@
 /**
  * Mesh Viewer for PRO UI
  * Author: Miguel A. Risco-Castillo (MRISCOC)
- * version: 3.14.1
- * Date: 2022/04/11
+ * version: 4.2.1
+ * Date: 2023/05/05
  */
 
 #include "../../../inc/MarlinConfigPre.h"
 
-#if BOTH(DWIN_LCD_PROUI, HAS_MESH)
+#if ALL(DWIN_LCD_PROUI, HAS_MESH)
 
 #include "../../../core/types.h"
 #include "../../marlinui.h"
-#include "dwin_lcd.h"
-#include "dwinui.h"
 #include "dwin.h"
 #include "dwin_popup.h"
 #include "../../../feature/bedlevel/bedlevel.h"
 #include "meshviewer.h"
 
-#if ENABLED(AUTO_BED_LEVELING_UBL)
+#if ENABLED(USE_GRID_MESHVIEWER)
   #include "bedlevel_tools.h"
 #endif
 
@@ -141,10 +139,7 @@ void MeshViewer::draw(const bool withsave/*=false*/, const bool redraw/*=true*/)
     bedLevelTools.setMeshViewerStatus();
   #else
     char str_1[6], str_2[6] = "";
-    ui.status_printf(0, F("Mesh minZ: %s, maxZ: %s"),
-      dtostrf(min, 1, 2, str_1),
-      dtostrf(max, 1, 2, str_2)
-    );
+    ui.status_printf(0, F("Mesh minZ: %s, maxZ: %s"), dtostrf(min, 1, 2, str_1), dtostrf(max, 1, 2, str_2));
   #endif
 }
 

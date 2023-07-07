@@ -24,8 +24,8 @@ set(SCRIPT_BRANCH 1.0.2) #Set to wanted marlin-cmake release tag or branch
 
 if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake)
 
-	file(DOWNLOAD https://github.com/tohara/marlin-cmake/archive/${SCRIPT_BRANCH}.tar.gz
-	${CMAKE_CURRENT_LIST_DIR}/marlin-cmake-src.tar.gz SHOW_PROGRESS)
+  file(DOWNLOAD https://github.com/tohara/marlin-cmake/archive/${SCRIPT_BRANCH}.tar.gz
+                ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake-src.tar.gz SHOW_PROGRESS)
 
   execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xvf ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake-src.tar.gz WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 
@@ -34,8 +34,9 @@ if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake)
 
 endif()
 
-if(WIN32 AND NOT EXISTS ${CMAKE_BINARY_DIR}/make.exe)
-	file(COPY ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake/resources/make.exe DESTINATION ${CMAKE_BINARY_DIR}/)
+if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake/modules/Arduino_SDK.cmake)
+  file(DOWNLOAD https://raw.githubusercontent.com/tohara/marlin-cmake/master/modules/Arduino_SDK.cmake
+                ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake/modules/Arduino_SDK.cmake SHOW_PROGRESS)
 endif()
 
 if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/marlin-cmake/modules/marlin_cmake_functions.cmake)
@@ -149,9 +150,9 @@ set(${PROJECT_NAME}_SRCS "${SOURCES};../../../Marlin/Marlin.ino")
 #    cmake .. -DUPLOAD_PORT=/dev/ttyACM0                             #
 #====================================================================#
 if(UPLOAD_PORT)
-	set(${PROJECT_NAME}_PORT ${UPLOAD_PORT})
+  set(${PROJECT_NAME}_PORT ${UPLOAD_PORT})
 else()
-	set(${PROJECT_NAME}_PORT /dev/ttyACM0)
+  set(${PROJECT_NAME}_PORT /dev/ttyACM0)
 endif()
 
 #====================================================================#

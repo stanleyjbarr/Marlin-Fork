@@ -140,18 +140,10 @@ inline void servo_probe_test() {
 
     #if ENABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
       #define PROBE_TEST_PIN Z_MIN_PIN
-      constexpr bool probe_inverting = Z_MIN_ENDSTOP_INVERTING;
-
-      SERIAL_ECHOLNPGM(". Probe Z_MIN_PIN: ", PROBE_TEST_PIN);
-      SERIAL_ECHOPGM(". Z_MIN_ENDSTOP_INVERTING: ");
-
+      #define _PROBE_PREF "Z_MIN"
     #else
       #define PROBE_TEST_PIN Z_MIN_PROBE_PIN
-      constexpr bool probe_inverting = Z_MIN_PROBE_ENDSTOP_INVERTING;
-
-      SERIAL_ECHOLNPGM(". Probe Z_MIN_PROBE_PIN: ", PROBE_TEST_PIN);
-      SERIAL_ECHOPGM(   ". Z_MIN_PROBE_ENDSTOP_INVERTING: ");
-
+      #define _PROBE_PREF "Z_MIN_PROBE"
     #endif
 
     SERIAL_ECHOLNPGM(". Probe " _PROBE_PREF "_PIN: ", PROBE_TEST_PIN);
@@ -195,7 +187,7 @@ inline void servo_probe_test() {
       // DEPLOY and STOW 4 times and see if the signal follows
       // Then it is a mechanical switch
       SERIAL_ECHOLNPGM(". Deploy & stow 4 times");
-      do {
+      for (uint8_t i = 0; i < 4; ++i) {
         servo[probe_index].move(servo_angles[Z_PROBE_SERVO_NR][0]); // Deploy
         safe_delay(500);
         deploy_state = READ(PROBE_TEST_PIN);
@@ -209,12 +201,12 @@ inline void servo_probe_test() {
       if (deploy_state != stow_state) {
         SERIAL_ECHOLNPGM("= Mechanical Switch detected");
         if (deploy_state) {
-          SERIAL_ECHOLNPGM("  DEPLOYED state: HIGH (logic 1)",
-                            "  STOWED (triggered) state: LOW (logic 0)");
+          SERIAL_ECHOLNPGM(". DEPLOYED state: HIGH (logic 1)\n"
+                           ". STOWED (triggered) state: LOW (logic 0)");
         }
         else {
-          SERIAL_ECHOLNPGM("  DEPLOYED state: LOW (logic 0)",
-                            "  STOWED (triggered) state: HIGH (logic 1)");
+          SERIAL_ECHOLNPGM(". DEPLOYED state: LOW (logic 0)\n"
+                           ". STOWED (triggered) state: HIGH (logic 1)");
         }
         #if ENABLED(BLTOUCH)
           SERIAL_ECHOLNPGM("FAIL: Can't enable BLTOUCH. Check your settings.");
@@ -300,9 +292,7 @@ void GcodeSuite::M43() {
   // 'E' Enable or disable endstop monitoring and return
   if (parser.seen('E')) {
     endstops.monitor_flag = parser.value_bool();
-    SERIAL_ECHOPGM("endstop monitor ");
-    SERIAL_ECHOF(endstops.monitor_flag ? F("en") : F("dis"));
-    SERIAL_ECHOLNPGM("abled");
+    SERIAL_ECHOLN(F("endstop monitor "), endstops.monitor_flag ? F("en") : F("dis"), F("abled"));
     return;
   }
 
@@ -334,7 +324,7 @@ void GcodeSuite::M43() {
     const uint8_t pin_count = last_pin - first_pin + 1;
     uint8_t pin_state[pin_count];
     bool can_watch = false;
-    LOOP_S_LE_N(i, first_pin, last_pin) {
+    for (uint8_t i = first_pin; i <= last_pin; ++i) {
       pin_t pin = GET_PIN_MAP_PIN_M43(i);
       if (!VALID_PIN(pin)) continue;
       if (M43_NEVER_TOUCH(i) || (!ignore_protection && pin_is_protected(pin))) continue;
@@ -377,7 +367,7 @@ void GcodeSuite::M43() {
     #endif
 
     for (;;) {
-      LOOP_S_LE_N(i, first_pin, last_pin) {
+      for (uint8_t i = first_pin; i <= last_pin; ++i) {
         const pin_t pin = GET_PIN_MAP_PIN_M43(i);
         if (!VALID_PIN(pin)) continue;
         if (M43_NEVER_TOUCH(i) || (!ignore_protection && pin_is_protected(pin))) continue;
@@ -406,7 +396,7 @@ void GcodeSuite::M43() {
   }
   else {
     // Report current state of selected pin(s)
-    LOOP_S_LE_N(i, first_pin, last_pin) {
+    for (uint8_t i = first_pin; i <= last_pin; ++i) {
       const pin_t pin = GET_PIN_MAP_PIN_M43(i);
       if (VALID_PIN(pin)) report_pin_state_extended(pin, ignore_protection, true);
     }

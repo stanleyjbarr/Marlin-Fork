@@ -23,8 +23,8 @@
 /**
  * DWIN Enhanced implementation for PRO UI
  * Author: Miguel A. Risco-Castillo (MRISCOC)
- * Version: 3.20.1
- * Date: 2022/10/25
+ * Version: 3.21.1
+ * Date: 2023/03/21
  */
 
 #include "../../../inc/MarlinConfig.h"
@@ -32,7 +32,6 @@
 #if ENABLED(DWIN_LCD_PROUI)
 
 #include "dwin_defines.h"
-#include "dwin_lcd.h"
 #include "dwinui.h"
 
 xy_int_t DWINUI::cursor = { 0 };
@@ -60,16 +59,18 @@ void DWINUI::setFont(fontid_t fid) { fontID = fid; }
 // Get font character width
 uint8_t DWINUI::fontWidth(fontid_t fid) {
   switch (fid) {
-    case font6x12 : return 6;
+    #if DISABLED(TJC_DISPLAY)
+      case font6x12 : return 6;
+      case font20x40: return 20;
+      case font24x48: return 24;
+      case font28x56: return 28;
+      case font32x64: return 32;
+    #endif
     case font8x16 : return 8;
     case font10x20: return 10;
     case font12x24: return 12;
     case font14x28: return 14;
     case font16x32: return 16;
-    case font20x40: return 20;
-    case font24x48: return 24;
-    case font28x56: return 28;
-    case font32x64: return 32;
     default: return 0;
   }
 }
@@ -77,16 +78,18 @@ uint8_t DWINUI::fontWidth(fontid_t fid) {
 // Get font character height
 uint8_t DWINUI::fontHeight(fontid_t fid) {
   switch (fid) {
+    #if DISABLED(TJC_DISPLAY)
     case font6x12 : return 12;
+      case font20x40: return 40;
+      case font24x48: return 48;
+      case font28x56: return 56;
+      case font32x64: return 64;
+    #endif
     case font8x16 : return 16;
     case font10x20: return 20;
     case font12x24: return 24;
     case font14x28: return 28;
     case font16x32: return 32;
-    case font20x40: return 40;
-    case font24x48: return 48;
-    case font28x56: return 56;
-    case font32x64: return 64;
     default: return 0;
   }
 }
@@ -137,7 +140,7 @@ void DWINUI::moveBy(xy_int_t point) {
 // Draw a Centered string using arbitrary x1 and x2 margins
 void DWINUI::drawCenteredString(bool bShow, fontid_t fid, uint16_t color, uint16_t bColor, uint16_t x1, uint16_t x2, uint16_t y, const char * const string) {
   const uint16_t x = _MAX(0U, x2 + x1 - strlen_P(string) * fontWidth(fid)) / 2 - 1;
-  DWIN_Draw_String(bShow, fid, color, bColor, x, y, string);
+  dwinDrawString(bShow, fid, color, bColor, x, y, string);
 }
 
 // Draw a char
@@ -181,7 +184,7 @@ void DWINUI::drawString(uint16_t color, const char * const string, uint16_t rlim
 void DWINUI::drawInt(uint8_t bShow, bool signedMode, fontid_t fid, uint16_t color, uint16_t bColor, uint8_t iNum, uint16_t x, uint16_t y, int32_t value) {
   char nstr[10];
   sprintf_P(nstr, PSTR("%*li"), (signedMode ? iNum + 1 : iNum), value);
-  DWIN_Draw_String(bShow, fid, color, bColor, x, y, nstr);
+  dwinDrawString(bShow, fid, color, bColor, x, y, nstr);
 }
 
 // Draw a numeric float value
@@ -196,7 +199,7 @@ void DWINUI::drawInt(uint8_t bShow, bool signedMode, fontid_t fid, uint16_t colo
 //  value: float value
 void DWINUI::drawFloat(uint8_t bShow, bool signedMode, fontid_t fid, uint16_t color, uint16_t bColor, uint8_t iNum, uint8_t fNum, uint16_t x, uint16_t y, float value) {
   char nstr[10];
-  DWIN_Draw_String(bShow, fid, color, bColor, x, y, dtostrf(value, iNum + (signedMode ? 2:1) + fNum, fNum, nstr));
+  dwinDrawString(bShow, fid, color, bColor, x, y, dtostrf(value, iNum + (signedMode ? 2:1) + fNum, fNum, nstr));
 }
 
 // ------------------------- Icons -------------------------------//
@@ -209,7 +212,7 @@ void DWINUI::drawFloat(uint8_t bShow, bool signedMode, fontid_t fid, uint16_t co
 void DWINUI::ICON_Show(bool BG, uint8_t icon, uint16_t x, uint16_t y) {
   const uint8_t libID = ICON TERN_(HAS_CUSTOMICONS, + (icon / 100));
   const uint8_t picID = icon TERN_(HAS_CUSTOMICONS, % 100);
-  DWIN_ICON_Show(BG, false, !BG, libID, picID, x, y);
+  dwinIconShow(BG, false, !BG, libID, picID, x, y);
 }
 
 // ------------------------- Buttons ------------------------------//
@@ -243,14 +246,14 @@ void DWINUI::drawCircle(uint16_t color, uint16_t x, uint16_t y, uint8_t r) {
   while (a <= b) {
     b = SQRT(sq(r) - sq(a));
     if (a == 0) b--;
-    DWIN_Draw_Point(color, 1, 1, x + a, y + b);   // Draw some sector 1
-    DWIN_Draw_Point(color, 1, 1, x + b, y + a);   // Draw some sector 2
-    DWIN_Draw_Point(color, 1, 1, x + b, y - a);   // Draw some sector 3
-    DWIN_Draw_Point(color, 1, 1, x + a, y - b);   // Draw some sector 4
-    DWIN_Draw_Point(color, 1, 1, x - a, y - b);   // Draw some sector 5
-    DWIN_Draw_Point(color, 1, 1, x - b, y - a);   // Draw some sector 6
-    DWIN_Draw_Point(color, 1, 1, x - b, y + a);   // Draw some sector 7
-    DWIN_Draw_Point(color, 1, 1, x - a, y + b);   // Draw some sector 8
+    dwinDrawPoint(color, 1, 1, x + a, y + b);   // Draw some sector 1
+    dwinDrawPoint(color, 1, 1, x + b, y + a);   // Draw some sector 2
+    dwinDrawPoint(color, 1, 1, x + b, y - a);   // Draw some sector 3
+    dwinDrawPoint(color, 1, 1, x + a, y - b);   // Draw some sector 4
+    dwinDrawPoint(color, 1, 1, x - a, y - b);   // Draw some sector 5
+    dwinDrawPoint(color, 1, 1, x - b, y - a);   // Draw some sector 6
+    dwinDrawPoint(color, 1, 1, x - b, y + a);   // Draw some sector 7
+    dwinDrawPoint(color, 1, 1, x - a, y + b);   // Draw some sector 8
     a++;
   }
 }
@@ -279,7 +282,7 @@ void DWINUI::drawFillCircle(uint16_t bcolor, uint16_t x,uint16_t y,uint8_t r) {
 //  color2 : End color
 uint16_t DWINUI::ColorInt(int16_t val, int16_t minv, int16_t maxv, uint16_t color1, uint16_t color2) {
   uint8_t B, G, R;
-  const float n = (float)(val - minv) / (maxv - minv);
+  const float n = float(val - minv) / (maxv - minv);
   R = (1 - n) * GetRColor(color1) + n * GetRColor(color2);
   G = (1 - n) * GetGColor(color1) + n * GetGColor(color2);
   B = (1 - n) * GetBColor(color1) + n * GetBColor(color2);
@@ -294,7 +297,7 @@ uint16_t DWINUI::RainbowInt(int16_t val, int16_t minv, int16_t maxv) {
   uint8_t B, G, R;
   const uint8_t maxB = 28, maxR = 28, maxG = 38;
   const int16_t limv = _MAX(abs(minv), abs(maxv));
-  float n = minv >= 0 ? (float)(val - minv) / (maxv - minv) : (float)val / limv;
+  float n = minv >= 0 ? float(val - minv) / (maxv - minv) : (float)val / limv;
   LIMIT(n, -1, 1);
   if (n < 0) {
     R = 0;

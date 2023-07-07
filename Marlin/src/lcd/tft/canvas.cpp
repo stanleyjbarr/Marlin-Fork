@@ -50,7 +50,7 @@ bool Canvas::toScreen() {
   return endLine == height;
 }
 
-void CANVAS::SetBackground(uint16_t color) {
+void Canvas::setBackground(uint16_t color) {
   /* TODO: test and optimize performance */
   /*
   uint32_t count = (endLine - startLine) * width;

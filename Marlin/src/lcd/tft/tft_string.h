@@ -21,14 +21,9 @@
  */
 #pragma once
 
-// TODO: Make AVR-compatible with separate ROM / RAM string methods
-
 #include <stdint.h>
 
-#include "../fontutils.h"
-
-extern const uint8_t ISO10646_1_5x7[];
-extern const uint8_t font10x20[];
+#include "../utf8.h"
 
 #define NO_GLYPH  0xFF
 
@@ -187,22 +182,24 @@ class TFT_String {
       static uint16_t extra_count;
     #endif
 
-    static char data[MAX_STRING_LENGTH + 1];
+    static uint16_t data[MAX_STRING_LENGTH + 1];
     static uint16_t span;   // in pixels
 
-    static void add_character(const char character);
-    static void eol() { data[length] = '\0'; }
+    static void add_character(const uint16_t character);
+    static void eol() { data[length] = 0; }
 
   public:
-    static uint8_t length;  // in characters
+    static uint8_t  length;  // in characters
 
     static void set_font(const uint8_t *font);
     static void add_glyphs(const uint8_t *font);
 
-    static font_t *font() { return font_header; };
-    static uint16_t font_height() { return font_header->FontAscent - font_header->FontDescent; }
-    static glyph_t *glyph(uint8_t character) { return glyphs[character] ?: glyphs[0x3F]; }  /* Use '?' for unknown glyphs */
-    static glyph_t *glyph(uint8_t *character) { return glyph(*character); }
+    static uint8_t  font_type() { return font_header->format; };
+    static uint16_t font_ascent() { return font_header->fontAscent; }
+    static uint16_t font_height() { return font_header->fontAscent - font_header->fontDescent; }
+
+    static glyph_t *glyph(uint16_t character);
+    static glyph_t *glyph(uint16_t *character) { return glyph(*character); }
 
     /**
      * @brief Set the string empty
@@ -210,11 +207,11 @@ class TFT_String {
     static void set();
 
     /**
-     * @brief Append an ASCII character and EOL
+     * @brief Append an unicode character and EOL
      *
-     * @param character The ASCII character
+     * @param character The unicode character
      */
-    static void add(const char character) { add_character(character); eol(); }
+    static void add(const uint16_t character) { add_character(character); eol(); }
     static void set(const lchar_t &character) { set(); add(character); }
 
     /**
@@ -257,16 +254,17 @@ class TFT_String {
     static void add(FSTR_P const ftpl, const int8_t index, const char *cstr=nullptr, FSTR_P const fstr=nullptr) { add(FTOP(ftpl), index, cstr, fstr); }
     static void set(FSTR_P const ftpl, const int8_t index, const char *cstr=nullptr, FSTR_P const fstr=nullptr) { set(); add(ftpl, index, cstr, fstr); }
 
-    // Common string ops
-    static void trim(const char character=' ');
-    static void rtrim(const char character=' ');
-    static void ltrim(const char character=' ');
+    // Common string operations
+    static void trim(const uint16_t character=' ');
+    static void rtrim(const uint16_t character=' ');
+    static void ltrim(const uint16_t character=' ');
     static void truncate(const uint8_t maxlen) { if (length > maxlen) { length = maxlen; eol(); } }
 
     // Accessors
-    static char *string() { return data; }
+    static uint16_t *string() { return data; }
     static uint16_t width() { return span; }
     static uint16_t center(const uint16_t width) { return span > width ? 0 : (width - span) / 2; }
+    static uint16_t vcenter(const uint16_t height) { return (height + font_header->capitalAHeight + 1) / 2 > font_header->fontAscent ? (height + font_header->capitalAHeight + 1) / 2 - font_header->fontAscent : 0 ; }
 };
 
 extern TFT_String tft_string;

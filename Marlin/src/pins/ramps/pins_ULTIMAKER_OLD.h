@@ -166,7 +166,7 @@
 //
 // LCD / Controller
 //
-#if EITHER(BOARD_REV_1_0, BOARD_REV_1_1_TO_1_3)
+#if ANY(BOARD_REV_1_0, BOARD_REV_1_1_TO_1_3)
 
   #define LCD_PINS_RS                         24
   #define LCD_PINS_EN                         22
@@ -175,7 +175,7 @@
   #define LCD_PINS_D6                         32
   #define LCD_PINS_D7                         30
 
-#elif BOTH(BOARD_REV_1_5, HAS_WIRED_LCD)
+#elif ALL(BOARD_REV_1_5, HAS_WIRED_LCD)
 
   #define BEEPER_PIN                          18
 

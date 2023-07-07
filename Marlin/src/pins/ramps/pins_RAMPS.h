@@ -250,22 +250,22 @@
   #ifndef HEATER_BED_PIN
     #define HEATER_BED_PIN          MOSFET_C_PIN
   #endif
-  #if EITHER(HAS_MULTI_HOTEND, HEATERS_PARALLEL)
+  #if ANY(HAS_MULTI_HOTEND, HEATERS_PARALLEL)
     #define HEATER_1_PIN            MOSFET_D_PIN
   #else
     #define FAN1_PIN                MOSFET_D_PIN
   #endif
 #endif
 
-#ifndef FAN_PIN
-  #if EITHER(FET_ORDER_EFB, FET_ORDER_EFF)        // Hotend, Fan, Bed or Hotend, Fan, Fan
-    #define FAN_PIN                 MOSFET_B_PIN
-  #elif EITHER(FET_ORDER_EEF, FET_ORDER_SF)       // Hotend, Hotend, Fan or Spindle, Fan
-    #define FAN_PIN                 MOSFET_C_PIN
+#ifndef FAN0_PIN
+  #if ANY(FET_ORDER_EFB, FET_ORDER_EFF)           // Hotend, Fan, Bed or Hotend, Fan, Fan
+    #define FAN0_PIN                MOSFET_B_PIN
+  #elif ANY(FET_ORDER_EEF, FET_ORDER_SF)          // Hotend, Hotend, Fan or Spindle, Fan
+    #define FAN0_PIN                MOSFET_C_PIN
   #elif FET_ORDER_EEB                             // Hotend, Hotend, Bed
-    #define FAN_PIN                            4  // IO pin. Buffer needed
+    #define FAN0_PIN                           4  // IO pin. Buffer needed
   #else                                           // Non-specific are "EFB" (i.e., "EFBF" or "EFBE")
-    #define FAN_PIN                 MOSFET_B_PIN
+    #define FAN0_PIN                MOSFET_B_PIN
   #endif
 #endif
 
@@ -569,7 +569,7 @@
     #define EXP1_01_PIN              AUX4_09_PIN
     #define EXP1_02_PIN              AUX4_10_PIN
 
-    #if BOTH(TOUCH_UI_FTDI_EVE, LCD_FYSETC_TFT81050)
+    #if ALL(TOUCH_UI_FTDI_EVE, LCD_FYSETC_TFT81050)
       #define EXP2_03_PIN            AUX4_11_PIN
       #define EXP2_05_PIN            AUX4_12_PIN
       #define EXP2_08_PIN                     -1  // RESET
@@ -597,13 +597,13 @@
   #if ENABLED(REPRAPWORLD_GRAPHICAL_LCD)
 
     #define LCD_PINS_RS              EXP2_07_PIN  // CS chip select /SS chip slave select
-    #define LCD_PINS_ENABLE          EXP2_06_PIN  // SID (MOSI)
+    #define LCD_PINS_EN              EXP2_06_PIN  // SID (MOSI)
     #define LCD_PINS_D4              EXP2_02_PIN  // SCK (CLK) clock
 
   #elif ALL(IS_NEWPANEL, PANEL_ONE)
 
     #define LCD_PINS_RS              AUX2_06_PIN
-    #define LCD_PINS_ENABLE          AUX2_08_PIN
+    #define LCD_PINS_EN              AUX2_08_PIN
     #define LCD_PINS_D4              AUX2_10_PIN
     #define LCD_PINS_D5              AUX2_09_PIN
     #define LCD_PINS_D6              AUX2_07_PIN
@@ -618,7 +618,7 @@
     #if ENABLED(CR10_STOCKDISPLAY)
 
       #define LCD_PINS_RS            EXP1_07_PIN
-      #define LCD_PINS_ENABLE        EXP1_08_PIN
+      #define LCD_PINS_EN            EXP1_08_PIN
       #define LCD_PINS_D4            EXP1_06_PIN
 
       #if !IS_NEWPANEL
@@ -632,7 +632,7 @@
       #endif
 
       #define LCD_PINS_RS            AUX2_05_PIN
-      #define LCD_PINS_ENABLE        AUX2_07_PIN
+      #define LCD_PINS_EN            AUX2_07_PIN
       #define LCD_PINS_D4            AUX2_04_PIN
       #define LCD_PINS_D5            AUX2_06_PIN
       #define LCD_PINS_D6            AUX2_08_PIN
@@ -644,7 +644,7 @@
 
     #else
 
-      #if EITHER(MKS_12864OLED, MKS_12864OLED_SSD1306)
+      #if ANY(MKS_12864OLED, MKS_12864OLED_SSD1306)
         #define LCD_PINS_DC          EXP1_06_PIN  // Set as output on init
         #define LCD_PINS_RS          EXP1_07_PIN  // Pull low for 1s to init
         // DOGM SPI LCD Support
@@ -654,7 +654,7 @@
         #define DOGLCD_SCK           EXP1_05_PIN
       #else
         #define LCD_PINS_RS          EXP1_04_PIN
-        #define LCD_PINS_ENABLE      EXP1_03_PIN
+        #define LCD_PINS_EN          EXP1_03_PIN
         #define LCD_PINS_D4          EXP1_05_PIN
         #define LCD_PINS_D5          EXP1_06_PIN
         #define LCD_PINS_D6          EXP1_07_PIN
@@ -738,7 +738,7 @@
         #define SD_DETECT_PIN        EXP2_07_PIN
       #endif
 
-    #elif EITHER(VIKI2, miniVIKI)
+    #elif ANY(VIKI2, miniVIKI)
 
       #define DOGLCD_CS              AUX4_05_PIN
       #define DOGLCD_A0              AUX2_07_PIN
@@ -882,7 +882,7 @@
         #define BEEPER_PIN           EXP2_05_PIN
       #endif
 
-      #if ENABLED(PANEL_ONE)                       // Buttons connect directly to AUX-2
+      #if ENABLED(PANEL_ONE)                      // Buttons connect directly to AUX-2
         #define BTN_EN1              AUX2_03_PIN
         #define BTN_EN2              AUX2_04_PIN
         #define BTN_ENC              AUX3_02_PIN

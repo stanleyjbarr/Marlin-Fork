@@ -55,10 +55,8 @@ namespace LanguageNarrow_tr {
   LSTR MSG_KILL_SUBCALL_OVERFLOW          = _UxGT("Subcall Overflow");
   LSTR MSG_LCD_ENDSTOPS                   = _UxGT("Endstops"); // Max length 8 characters
   LSTR MSG_LCD_SOFT_ENDSTOPS              = _UxGT("Yazılımsal Endstops");
-  LSTR MSG_MAIN                           = _UxGT("Ana");
+  LSTR MSG_MAIN_MENU                      = _UxGT("Ana");
   LSTR MSG_ADVANCED_SETTINGS              = _UxGT("Gelişmiş Ayarlar");
-  LSTR MSG_TOOLBAR_SETUP                  = _UxGT("Araç Çubuğu Kurulumu");
-  LSTR MSG_OPTION_DISABLED                = _UxGT("Seçenek Devre Dışı");
   LSTR MSG_CONFIGURATION                  = _UxGT("Yapılandırma");
   LSTR MSG_RUN_AUTO_FILES                 = _UxGT("Oto. Başlat");
   LSTR MSG_DISABLE_STEPPERS               = _UxGT("Motorları Durdur");
@@ -73,11 +71,11 @@ namespace LanguageNarrow_tr {
   LSTR MSG_FILAMENT_SET                   = _UxGT("Filament Ayarları");
   LSTR MSG_FILAMENT_MAN                   = _UxGT("Filament Yönetimi");
   LSTR MSG_MANUAL_LEVELING                = _UxGT("Manuel Seviyeleme");
-  LSTR MSG_LEVBED_FL                      = _UxGT("Sol Ön");
-  LSTR MSG_LEVBED_FR                      = _UxGT("Ön Sağ");
-  LSTR MSG_LEVBED_C                       = _UxGT("Orta");
-  LSTR MSG_LEVBED_BL                      = _UxGT("Arka Sol");
-  LSTR MSG_LEVBED_BR                      = _UxGT("Arka Sağ");
+  LSTR MSG_TRAM_FL                        = _UxGT("Sol Ön");
+  LSTR MSG_TRAM_FR                        = _UxGT("Ön Sağ");
+  LSTR MSG_TRAM_C                         = _UxGT("Orta");
+  LSTR MSG_TRAM_BL                        = _UxGT("Arka Sol");
+  LSTR MSG_TRAM_BR                        = _UxGT("Arka Sağ");
   LSTR MSG_MANUAL_MESH                    = _UxGT("Manuel Mesh");
   LSTR MSG_AUTO_MESH                      = _UxGT("Oto Mesh Oluştur");
   LSTR MSG_AUTO_Z_ALIGN                   = _UxGT("Oto. Z-Hizalama");
@@ -273,7 +271,7 @@ namespace LanguageNarrow_tr {
   LSTR MSG_SET_LEDS_VIOLET                = _UxGT("Menekşe");
   LSTR MSG_SET_LEDS_WHITE                 = _UxGT("Beyaz");
   LSTR MSG_SET_LEDS_DEFAULT               = _UxGT("Varsayılan");
-  LSTR MSG_LED_CHANNEL_N                  = _UxGT("Kanal =");
+  LSTR MSG_LED_CHANNEL_N                  = _UxGT("Kanal {");
   LSTR MSG_LEDS2                          = _UxGT("Işıklar #2");
   LSTR MSG_NEO2_PRESETS                   = _UxGT("Işık #2 Ön Ayarları");
   LSTR MSG_NEO2_BRIGHTNESS                = _UxGT("Parlaklık");
@@ -429,7 +427,7 @@ namespace LanguageNarrow_tr {
   LSTR MSG_SETTINGS_STORED                = _UxGT("Ayarlar Kaydedildi");
   LSTR MSG_MEDIA_UPDATE                   = _UxGT("SD Güncellemesi");
   LSTR MSG_RESET_PRINTER                  = _UxGT("Yazıcıyı Resetle");
-  LSTR MSG_REFRESH                        = LCD_STR_REFRESH  _UxGT("Yenile");
+  LSTR MSG_REFRESH                        = LCD_STR_REFRESH _UxGT("Yenile");
   LSTR MSG_INFO_SCREEN                    = _UxGT("Bilgi Ekranı");
   LSTR MSG_INFO_MACHINENAME               = _UxGT("Makine Adı");
   LSTR MSG_INFO_SIZE                      = _UxGT("Boyut");
@@ -694,7 +692,7 @@ namespace LanguageNarrow_tr {
   LSTR MSG_MMU2_EJECT_RECOVER             = _UxGT("Kaldır, tıkla");
 
   LSTR MSG_MIX                            = _UxGT("Karışım");
-  LSTR MSG_MIX_COMPONENT_N                = _UxGT("Bileşen =");
+  LSTR MSG_MIX_COMPONENT_N                = _UxGT("Bileşen {");
   LSTR MSG_MIXER                          = _UxGT("Karıştırıcı");
   LSTR MSG_GRADIENT                       = _UxGT("Gradyan");
   LSTR MSG_FULL_GRADIENT                  = _UxGT("Tam Gradyan");

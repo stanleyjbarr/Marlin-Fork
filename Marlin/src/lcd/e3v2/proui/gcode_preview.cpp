@@ -21,41 +21,27 @@
  */
 
 /**
- * DWIN g-code thumbnail preview
+ * DWIN G-code thumbnail preview
  * Author: Miguel A. Risco-Castillo
- * version: 3.1.2
- * Date: 2022/09/03
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * For commercial applications additional licenses can be requested
+ * version: 3.3.2
+ * Date: 2023/06/18
  */
 
 #include "../../../inc/MarlinConfigPre.h"
 
-#if BOTH(DWIN_LCD_PROUI, HAS_GCODE_PREVIEW)
+#if ALL(DWIN_LCD_PROUI, HAS_GCODE_PREVIEW)
 
 #include "../../../core/types.h"
 #include "../../marlinui.h"
 #include "../../../sd/cardreader.h"
 #include "../../../MarlinCore.h" // for wait_for_user
-#include "dwin_lcd.h"
-#include "dwinui.h"
 #include "dwin.h"
 #include "dwin_popup.h"
 #include "base64.hpp"
 #include "gcode_preview.h"
+
+#define THUMBWIDTH 230
+#define THUMBHEIGHT 180
 
 typedef struct {
   char name[13] = "";   //8.3 + null
@@ -119,7 +105,7 @@ void Get_Value(char *buf, const char * const key, float &value) {
 }
 
 bool Has_Preview() {
-  const char * tbstart = "; thumbnail begin 230x180";
+  const char * tbstart = "; thumbnail begin " STRINGIFY(THUMBWIDTH) "x" STRINGIFY(THUMBHEIGHT);
   char * posptr = 0;
   uint8_t nbyte = 1;
   uint32_t indx = 0;
@@ -150,7 +136,7 @@ bool Has_Preview() {
       Get_Value(buf, ";MAXZ:", fileprop.height);
       fileprop.height -= tmp;
       posptr = strstr(buf, tbstart);
-      if (posptr != NULL) {
+      if (posptr != nullptr) {
         fileprop.thumbstart = indx + (posptr - &buf[0]);
       }
       else {
@@ -202,6 +188,8 @@ bool Has_Preview() {
   card.closefile();
   buf64[readed] = 0;
 
+  fileprop.thumbwidth = THUMBWIDTH;
+  fileprop.thumbheight = THUMBHEIGHT;
   fileprop.thumbsize = decode_base64(buf64, fileprop.thumbdata);  card.closefile();
   DWINUI::WriteToSRAM(0x00, fileprop.thumbsize, fileprop.thumbdata);
   delete[] fileprop.thumbdata;
@@ -236,21 +224,23 @@ void Preview_DrawFromSD() {
     dwinUpdateLCD();
   }
   else {
-    HMI_flag.select_flag = 1;
+    hmiFlag.select_flag = 1;
     wait_for_user = false;
   }
 }
 
 void Preview_Invalidate() {
-  fileprop.thumbstart = 0;
+  fileprop.thumbsize = 0;
 }
 
 bool Preview_Valid() {
-  return !!fileprop.thumbstart;
+  return !!fileprop.thumbsize;
 }
 
-void Preview_Reset() {
-  fileprop.thumbsize = 0;
+void Preview_Show() {
+  const uint8_t xpos = (DWIN_WIDTH - fileprop.thumbwidth) / 2;
+  const uint8_t ypos = (205 - fileprop.thumbheight) / 2 + 87;
+  dwinIconShow(xpos, ypos, 0x00);
 }
 
 #endif // HAS_GCODE_PREVIEW && DWIN_LCD_PROUI

@@ -51,7 +51,7 @@ namespace LanguageNarrow_uk {
   LSTR MSG_KILL_SUBCALL_OVERFLOW            = _UxGT("Переповн. виклику");
   LSTR MSG_LCD_SOFT_ENDSTOPS                = _UxGT("Прогр.кінцевики");
   LSTR MSG_LCD_ENDSTOPS                     = _UxGT("Кінцевик"); // Max length 8 characters
-  LSTR MSG_MAIN                             = _UxGT("Основне меню");
+  LSTR MSG_MAIN_MENU                        = _UxGT("Основне меню");
   LSTR MSG_ADVANCED_SETTINGS                = _UxGT("Інші налаштування");
   LSTR MSG_CONFIGURATION                    = _UxGT("Конфігурація");
   LSTR MSG_RUN_AUTO_FILES                   = _UxGT("Автостарт");
@@ -242,7 +242,7 @@ namespace LanguageNarrow_uk {
   LSTR MSG_SET_LEDS_VIOLET                  = _UxGT("Фіолетовий");
   LSTR MSG_SET_LEDS_WHITE                   = _UxGT("Білий");
   LSTR MSG_SET_LEDS_DEFAULT                 = _UxGT("За умовчанням");
-  LSTR MSG_LED_CHANNEL_N                    = _UxGT("Канал =");
+  LSTR MSG_LED_CHANNEL_N                    = _UxGT("Канал {");
   LSTR MSG_LEDS2                            = _UxGT("Світло #2");
   LSTR MSG_NEO2_PRESETS                     = _UxGT("Передуст. світла #2");
   LSTR MSG_NEO2_BRIGHTNESS                  = _UxGT("Яскравість");
@@ -268,7 +268,7 @@ namespace LanguageNarrow_uk {
   LSTR MSG_MOVE_10MM                        = _UxGT("Рух 10мм");
   LSTR MSG_MOVE_100MM                       = _UxGT("Рух 100mm");
   LSTR MSG_SPEED                            = _UxGT("Швидкість");
-  LSTR MSG_BED_Z                            = _UxGT("Z Столу");
+  LSTR MSG_MESH_Z_OFFSET                    = _UxGT("Z Столу");
   LSTR MSG_NOZZLE                           = _UxGT("Сопло, ") LCD_STR_DEGREE _UxGT("C");
   LSTR MSG_NOZZLE_N                         = _UxGT("Сопло ~");
   LSTR MSG_NOZZLE_PARKED                    = _UxGT("Сопло запарковане");
@@ -302,7 +302,7 @@ namespace LanguageNarrow_uk {
   LSTR MSG_PID_AUTOTUNE                     = _UxGT("Автопідбір PID");
   LSTR MSG_PID_AUTOTUNE_E                   = _UxGT("Автопідбір PID *");
   LSTR MSG_PID_AUTOTUNE_DONE                = _UxGT("Підбір PID виконано");
-  LSTR MSG_PID_BAD_EXTRUDER_NUM             = _UxGT("Збій автопідбору! Поганий екструдер.");
+  LSTR MSG_PID_BAD_HEATER_ID                = _UxGT("Збій автопідбору! Поганий екструдер.");
   LSTR MSG_PID_TEMP_TOO_HIGH                = _UxGT("Збій автопідбору! Температура завищена.");
   LSTR MSG_PID_TIMEOUT                      = _UxGT("Збій автопідбору! Вичерпан час.");
 
@@ -378,7 +378,7 @@ namespace LanguageNarrow_uk {
   LSTR MSG_POWER                            = _UxGT("Потужність");
   LSTR MSG_START_PRINT                      = _UxGT("Почати друк");
 
-  LSTR MSG_BUTTON_NEXT                      = _UxGT("Далі");  //short text for buttons
+  LSTR MSG_BUTTON_NEXT                      = _UxGT("Далі"); //short text for buttons
   LSTR MSG_BUTTON_INIT                      = _UxGT("Ініц-я");
   LSTR MSG_BUTTON_STOP                      = _UxGT("Зупинка");
   LSTR MSG_BUTTON_PRINT                     = _UxGT("Друк");
@@ -405,7 +405,7 @@ namespace LanguageNarrow_uk {
   LSTR MSG_END_LOOPS                        = _UxGT("End Repeat Loops"); // needs translation
   LSTR MSG_PRINTING_OBJECT                  = _UxGT("Друк об'єкта");
   LSTR MSG_CANCEL_OBJECT                    = _UxGT("Завершити об'єкт");
-  LSTR MSG_CANCEL_OBJECT_N                  = _UxGT("Завершити об'єкт =");
+  LSTR MSG_CANCEL_OBJECT_N                  = _UxGT("Завершити об'єкт {");
   LSTR MSG_OUTAGE_RECOVERY                  = _UxGT("Віднов. після збою");
   LSTR MSG_MEDIA_MENU                       = _UxGT("Друкувати з SD");
   LSTR MSG_NO_MEDIA                         = _UxGT("SD-картки немає");

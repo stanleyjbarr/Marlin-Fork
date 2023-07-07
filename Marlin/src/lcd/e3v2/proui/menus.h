@@ -19,33 +19,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
 /**
  * Menu functions for ProUI
  * Author: Miguel A. Risco-Castillo
- * Version: 1.9.1
- * Date: 2022/12/02
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
+ * Version: 1.10.1
+ * Date: 2022/05/01
  */
-#pragma once
 
 #include "dwinui.h"
 
 #define MENU_CHAR_LIMIT  24
-#define MENU_MAX_ITEMS   TERN(SDSORT_LIMIT, SDSORT_LIMIT, 64)
+
+#ifndef MENU_MAX_ITEMS
+  #define MENU_MAX_ITEMS 100
+#endif
 
 typedef struct {
   int32_t maxValue     = 0;        // Auxiliar max integer/scaled float value
@@ -198,11 +187,13 @@ void invalidateMenu();
 void updateMenu(Menu* &menu);
 
 //Redraw the current Menu if it is valid
-void ReDrawMenu(bool force = false);
+void ReDrawMenu(bool force=false);
+
+//Redraw selected menu item
+void ReDrawItem();
 
 // Clear menuItems array and free menuItems elements
 void menuItemsClear();
-
 
 // Prepare menuItems array
 void menuItemsPrepare(int8_t totalitems);

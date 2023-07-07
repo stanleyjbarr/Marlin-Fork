@@ -23,8 +23,8 @@
 /**
  * Bed Level Tools for Pro UI
  * Extended by: Miguel A. Risco-Castillo (MRISCOC)
- * Version: 2.1.0
- * Date: 2022/08/27
+ * Version: 3.2.0
+ * Date: 2023/05/03
  *
  * Based on the original work of: Henri-J-Norden
  * https://github.com/Jyers/Marlin/pull/126
@@ -47,14 +47,12 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
-//#define USE_UBL_VIEWER 1
-
 #define UBL_Z_OFFSET_MIN -3.0
 #define UBL_Z_OFFSET_MAX  3.0
 
 class BedLevelTools {
 public:
-  #if ENABLED(USE_UBL_VIEWER)
+  #if ENABLED(USE_GRID_MESHVIEWER)
     static bool viewer_asymmetric_range;
     static bool viewer_print_value;
   #endif
